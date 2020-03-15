@@ -50,8 +50,6 @@ public class SignUp extends JFrame
                     String phone = phoneTextField3.getText();
                     int number = Integer.parseInt(numberComboBox1.getSelectedItem().toString());
                     int registID = -1;
-                    //------------------------------Regist测试
-
                     try
                     {
                         if ((registID = registTestClass.sendMessage(name, ID, phone, number)) != -1)
