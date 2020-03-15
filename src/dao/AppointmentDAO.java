@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 
-public interface Appointment {
+public interface AppointmentDAO {
     /**
      * 新建一次预约项目
      * @param begin
