@@ -1,4 +1,4 @@
-package DAO;
+package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,13 +16,13 @@ import model.Appointment;
 import model.Register;
 
 
-public class RegisterDaoImpl implements RegisterDao {
+public class RegisterDaoImpl implements DAO.RegisterDao {
 
 	
 
 	@Override
 	public void addRegister(Register register) {
-		DBUtil dbu=new DBUtil();
+		DAO.DBUtil dbu=new DAO.DBUtil();
 		
 		Connection conn;
 		
@@ -50,7 +50,7 @@ public class RegisterDaoImpl implements RegisterDao {
 	@Override
 	public List<Register> select() {
 		List<Register> list= new ArrayList<Register>();
-		DBUtil dbu=new DBUtil();
+		DAO.DBUtil dbu=new DAO.DBUtil();
 		Connection conn=null;
 		Register register=null;
 		try {
@@ -74,7 +74,7 @@ public class RegisterDaoImpl implements RegisterDao {
 
 	@Override
 	public Register selectByUserID(int id) {
-		DBUtil dbu=new DBUtil();
+		DAO.DBUtil dbu=new DAO.DBUtil();
 		Connection conn=null;
 		Register register=null;
 		try {
@@ -99,7 +99,7 @@ public class RegisterDaoImpl implements RegisterDao {
 
 	@Override
 	public void deleteByID(int id) {
-		DBUtil dbu=new DBUtil();
+		DAO.DBUtil dbu=new DAO.DBUtil();
 		Connection conn=null;
 		Register register=null;
 		try {

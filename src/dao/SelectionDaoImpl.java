@@ -2,6 +2,11 @@ package dao;
 
 import model.Selection;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.List;
+
 /**
  * @ClassName SelectionDaoImpl
  * @Description TODO
@@ -16,12 +21,13 @@ public class SelectionDaoImpl implements SelectionDao {
      * @param obj 要插入的中签记录对象
      * @return 若插入成功则true 否则false
      */
+    @Override
     public  boolean add(Selection obj){
         Connection conn = null;
         try {
            /* INSERT INTO table_name (column1,column2,column3,...)
             VALUES (value1,value2,value3,...);*/
-            conn = DBUtil.getConnection();
+            conn = DAO.DBUtil.getConnection();
             String sql = "INSERT  INTO selection (id,userID,registerID,time,appointmentID)" +
                     " VALUES (?,?,?,?,?)";
             PreparedStatement stmt = conn.prepareStatement(sql);;
@@ -45,6 +51,7 @@ public class SelectionDaoImpl implements SelectionDao {
      * @param indetityNumber 身份证号码
      * @return 返回表中这个身份证所有的记录
      */
+    @Override
     public List<Selection> findTotal(String indetityNumber){
 
 
@@ -54,6 +61,7 @@ public class SelectionDaoImpl implements SelectionDao {
      * @param indetityNumber 身份证号码
      * @return 若中签表中存在这个人的记录则返回true 否则返回false
      */
+    @Override
     public boolean isExist(String indetityNumber){
 
 
