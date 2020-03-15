@@ -15,13 +15,13 @@ import model.Register;
 import util.DBUtil;
 
 
-public class RegisterDaoImpl implements DAO.RegisterDao {
+public class RegisterDaoImpl implements RegisterDao {
 
 	
 
 	@Override
 	public void addRegister(Register register) {
-		DAO.DBUtil dbu=new DAO.DBUtil();
+		DBUtil dbu=new DBUtil();
 		
 		Connection conn;
 		
@@ -49,7 +49,7 @@ public class RegisterDaoImpl implements DAO.RegisterDao {
 	@Override
 	public List<Register> select() {
 		List<Register> list= new ArrayList<Register>();
-		DAO.DBUtil dbu=new DAO.DBUtil();
+		DBUtil dbu=new DBUtil();
 		Connection conn=null;
 		Register register=null;
 		try {
@@ -73,7 +73,7 @@ public class RegisterDaoImpl implements DAO.RegisterDao {
 
 	@Override
 	public Register selectByUserID(int id) {
-		DAO.DBUtil dbu=new DAO.DBUtil();
+		DBUtil dbu=new DBUtil();
 		Connection conn=null;
 		Register register=null;
 		try {
@@ -98,7 +98,7 @@ public class RegisterDaoImpl implements DAO.RegisterDao {
 
 	@Override
 	public void deleteByID(int id) {
-		DAO.DBUtil dbu=new DAO.DBUtil();
+		DBUtil dbu=new DBUtil();
 		Connection conn=null;
 		Register register=null;
 		try {

@@ -1,6 +1,5 @@
 package model;
 
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 /**
@@ -17,7 +16,7 @@ public class Selection {
     Date time;
     int appointmentID;
     
-    public int getId() {
+    public String getId() {
 		return id;
 	}
 

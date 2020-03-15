@@ -1,3 +1,7 @@
+package FrontEnd;
+
+import FrontEnd.IRegisterService;
+
 /***简单实现接口，方便前端测试使用
  *
  */

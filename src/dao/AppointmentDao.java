@@ -5,7 +5,7 @@ import java.util.List;
 
 import model.Appointment;
 
-public interface AppointmentDAO {
+public interface AppointmentDao {
 	/**
      * 新建一次预约项目
      * @param begin

@@ -1,7 +1,8 @@
-import java.util.ArrayList;
+package FrontEnd;
 
-public class QueryTestClass implements IQueryService
-{
+import java.util.ArrayList;
+import FrontEnd.IRegisterService;
+public class QueryTestClass implements IQueryService {
     /***测试用接口实现，注意替换.查询是否中签，若中签，给出购买凭证
      * @param registID 预约ID
      * */
