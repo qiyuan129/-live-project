@@ -8,4 +8,6 @@ package model;
  * @Version 1.0
  */
 public class Admin {
+	int id;	
+	String password;
 }

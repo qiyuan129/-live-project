@@ -1,5 +1,7 @@
 package dao;
 
+import model.Admin;
+
 /**
  * @ClassName AdminDao
  * @Description TODO
@@ -8,4 +10,6 @@ package dao;
  * @Version 1.0
  */
 public interface AdminDao {
+	//管理员登陆
+	void adminLogin(String id, String password);
 }
