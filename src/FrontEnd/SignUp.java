@@ -31,7 +31,6 @@ public class SignUp extends JFrame
 
     public SignUp(RegisterService registTestClass, SelectionDaoImpl queryTestClass)
     {
-        
         提交预约Button.addActionListener(new ActionListener()
         {
 
