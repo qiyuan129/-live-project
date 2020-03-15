@@ -75,6 +75,11 @@ public class SelectionDaoImpl implements SelectionDao {
         return  null;
     }
 
+    /**
+     * 根据id属性查找。
+     * @param id
+     * @return
+     */
     @Override
     public Selection selectByID(int id) {
         return null;
