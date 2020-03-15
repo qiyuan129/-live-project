@@ -1,6 +1,7 @@
 package dao;
 
 import model.Appointment;
+import model.Register;
 
 import java.util.List;
 
@@ -14,15 +15,15 @@ import java.util.List;
 public interface RegisterDao {
     /**
      * 新增预约信息
-     * @param appointment
+     * @param register
      */
-    void addAppointment(Appointment appointment);
+    void addRegister(Register register);
 
     /**
      * 查找所有信息
      * @return 所有预约信息
      */
-    List<Appointment> select();
+    List<Register> select();
     //根据用户id查找预约信息
 
     /**
@@ -30,7 +31,7 @@ public interface RegisterDao {
      * @param id
      * @return 若有返回Appointment 没有null
      */
-    Appointment selectByUserID(int id);
+    Register selectByUserID(int id);
 
     /**
      * 根据预约信息id删除预约信息

@@ -43,4 +43,11 @@ public interface UserDao {
      * @return 若有返回User，没有返回null;
      */
     User selectByIdentity(String identity);
+
+    /**
+     * 根据身份证号更新User信息
+     * @param identity
+     * @param user
+     */
+    void updataByIdentity(String identity,User user);
 }

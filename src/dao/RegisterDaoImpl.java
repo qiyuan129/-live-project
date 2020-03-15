@@ -1,6 +1,7 @@
 package dao;
 
 import model.Appointment;
+import model.Register;
 
 import java.util.List;
 
@@ -12,18 +13,19 @@ import java.util.List;
  * @Version 1.0
  */
 public class RegisterDaoImpl implements RegisterDao {
+
     @Override
-    public void addAppointment(Appointment appointment) {
+    public void addRegister(Register register) {
 
     }
 
     @Override
-    public List<Appointment> select() {
+    public List<Register> select() {
         return null;
     }
 
     @Override
-    public Appointment selectByUserID(int id) {
+    public Register selectByUserID(int id) {
         return null;
     }
 

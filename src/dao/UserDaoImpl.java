@@ -29,7 +29,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void deleteById(int id) {
+    public void deleteByIdentity(String identity) {
 
     }
 
@@ -37,4 +37,10 @@ public class UserDaoImpl implements UserDao {
     public User selectByIdentity(String identity) {
         return null;
     }
+
+    @Override
+    public void updataByIdentity(String identity, User user) {
+
+    }
+
 }
