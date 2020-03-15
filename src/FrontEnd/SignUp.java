@@ -1,3 +1,6 @@
+package FrontEnd;
+import dao.SelectionDao;
+import dao.SelectionDaoImpl;
 import service.RegisterService;
 
 import java.awt.event.ActionEvent;
@@ -25,9 +28,9 @@ public class SignUp extends JFrame
     private JComboBox numberComboBox1;
 
 
-    public SignUp(RegisterService registTestClass, QueryTestClass queryTestClass)
+    public SignUp(RegisterService registTestClass, SelectionDaoImpl queryTestClass)
     {
-
+        
         提交预约Button.addActionListener(new ActionListener()
         {
 
@@ -93,7 +96,7 @@ public class SignUp extends JFrame
                     {
                         registID = Integer.parseInt(registIDTextField5.getText());
                         ArrayList<Object> certificInfo = new ArrayList<>();
-                        if ((certificInfo = queryTestClass.isExistSection(registID)) != null)
+                        if ((certificInfo = queryTestClass.isExistSelection(registID)) != null)
                         {
                             String name = certificInfo.get(0).toString();
                             String ID = certificInfo.get(1).toString();

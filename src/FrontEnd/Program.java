@@ -1,5 +1,8 @@
 package FrontEnd;
 
+import dao.SelectionDao;
+import dao.SelectionDaoImpl;
+import model.Selection;
 import service.RegisterService;
 
 import java.awt.Dimension;
@@ -16,9 +19,9 @@ public class Program
         int height=500;
 
         RegisterService registTestClass = new RegisterService();
-//        QueryTestClass queryTestClass=new QueryTestClass();
+        SelectionDaoImpl queryTestClass=new SelectionDaoImpl();
         JFrame frame = new JFrame("SignUp");
-//        frame.setContentPane(new SignUp(registTestClass,queryTestClass).userPanel);
+        frame.setContentPane(new SignUp(registTestClass,queryTestClass).userPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //窗口大小设置
         Dimension dimension = new Dimension();

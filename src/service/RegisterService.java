@@ -41,6 +41,7 @@ public class RegisterService {
         if (!UserService.isIDValidator(userIdentity)||UserService.isTruePhone(userPhone)) {
             return -1;
         }
+
         if (this.user == null) {
             this.user.setName(userName);
             this.user.setIdentity(userIdentity);

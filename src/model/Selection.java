@@ -16,7 +16,7 @@ public class Selection {
     Date time;
     int appointmentID;
     
-    public String getId() {
+    public int getId() {
 		return id;
 	}
 
