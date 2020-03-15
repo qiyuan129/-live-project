@@ -9,4 +9,13 @@ package service;
  */
 public class SelectionService  {
 
+    /**
+     * 产生
+     */
+    void createSelection(){
+
+    }
+
+
+
 }
