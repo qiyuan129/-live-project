@@ -43,4 +43,6 @@ public interface UserDao {
      * @return 若有返回User，没有返回null;
      */
     User selectByIdentity(String identity);
+
+	void deleteById(int id);
 }
