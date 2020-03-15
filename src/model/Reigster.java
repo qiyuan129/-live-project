@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Date;
+
 /**
  * @ClassName Reigster
  * @Description TODO
@@ -8,4 +10,9 @@ package model;
  * @Version 1.0
  */
 public class Reigster {
+    int id;
+    int userID;
+    int mask;
+    int appointment;
+    Date time;
 }
