@@ -42,5 +42,8 @@ public interface UserDao {
      * @param identity
      * @return 若有返回User，没有返回null;
      */
-    User selectByIdentity(String identity);
+    List<User> selectByIdentity(String identity);
+
+    User selectByIdentityAndCurrentAPPID(String identity, int currentAppID);
+
 }

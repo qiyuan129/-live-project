@@ -1,5 +1,7 @@
 package dao;
 
+import model.Selection;
+
 /**
  * @ClassName SelectionDaoImpl
  * @Description TODO
@@ -38,6 +40,7 @@ public class SelectionDaoImpl implements SelectionDao {
     }
 
 
+
     /**
      * @param indetityNumber 身份证号码
      * @return 返回表中这个身份证所有的记录
@@ -63,5 +66,11 @@ public class SelectionDaoImpl implements SelectionDao {
     public List<String> importSelectedList(int appointmentID){
 
     }
+
+    @Override
+    public Selection selectByID(int id) {
+        return null;
+    }
+
 
 }
