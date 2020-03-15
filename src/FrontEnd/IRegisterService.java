@@ -1,5 +1,6 @@
-public interface IRegisterService
-{
+package FrontEnd;
+
+public interface IRegisterService {
     /*** 测试用接口，注意替换。将用户预约登记的信息提交
      * @param userName 用户真实姓名
      * @param userIdentify 用户身份证号

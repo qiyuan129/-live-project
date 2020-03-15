@@ -13,8 +13,9 @@ import java.util.Date;
 import java.util.List;
 
 import model.Appointment;
+import util.DBUtil;
 
-public class AppointmentDaoImpl implements AppointmentDao {
+public class AppointmentDaoImpl implements AppointmentDao{
 
 	
 	
@@ -22,7 +23,7 @@ public class AppointmentDaoImpl implements AppointmentDao {
 	
 	@Override
 	public void addAppointment(Date begin, Date end, int totalMask, int maskMAX) {
-		DAO.DBUtil dbu=new DAO.DBUtil();
+		DBUtil dbu=new DBUtil();
 		Connection conn=null;
 		try {
 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -47,7 +48,7 @@ public class AppointmentDaoImpl implements AppointmentDao {
 
 	@Override
 	public void addAppointment(Date begin, Date end) {
-		DAO.DBUtil dbu=new DAO.DBUtil();
+		DBUtil dbu=new DBUtil();
 		Connection conn=null;
 		try {
 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -72,7 +73,7 @@ public class AppointmentDaoImpl implements AppointmentDao {
 
 	@Override
 	public void addAppointment() {
-		DAO.DBUtil dbu=new DAO.DBUtil();
+		DBUtil dbu=new DBUtil();
 		Connection conn=null;
 		Date now = new Date();
 		Calendar nowDate = Calendar.getInstance();  
@@ -102,7 +103,7 @@ public class AppointmentDaoImpl implements AppointmentDao {
 
 	@Override
 	public Appointment getAppointment(int id) {
-		DAO.DBUtil dbu=new DAO.DBUtil();
+		DBUtil dbu=new DBUtil();
 		Connection conn=null;
 		Appointment appointment=null;
 		try {
@@ -130,7 +131,7 @@ public class AppointmentDaoImpl implements AppointmentDao {
 	public List<Appointment> getAppointmentList() {
 		
 		List<Appointment> list= new ArrayList<Appointment>();
-		DAO.DBUtil dbu=new DAO.DBUtil();
+		DBUtil dbu=new DBUtil();
 		Connection conn=null;
 		Appointment appointment=null;
 		try {
@@ -157,8 +158,7 @@ public class AppointmentDaoImpl implements AppointmentDao {
 	@Override
 	public void setEndTime(Date time) {
 		// TODO Auto-generated method stub
-		
-		
+
 		
 		
 	}

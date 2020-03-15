@@ -1,3 +1,7 @@
+package FrontEnd;
+
+import service.RegisterService;
+
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import javax.swing.JFrame;
@@ -11,10 +15,10 @@ public class Program
         int width=500;
         int height=500;
 
-        RegistTestClass registTestClass = new RegistTestClass();
-        QueryTestClass queryTestClass=new QueryTestClass();
+        RegisterService registTestClass = new RegisterService();
+//        QueryTestClass queryTestClass=new QueryTestClass();
         JFrame frame = new JFrame("SignUp");
-        frame.setContentPane(new SignUp(registTestClass,queryTestClass).userPanel);
+//        frame.setContentPane(new SignUp(registTestClass,queryTestClass).userPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //窗口大小设置
         Dimension dimension = new Dimension();

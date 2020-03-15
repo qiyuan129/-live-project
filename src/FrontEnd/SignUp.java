@@ -1,3 +1,5 @@
+import service.RegisterService;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -23,7 +25,7 @@ public class SignUp extends JFrame
     private JComboBox numberComboBox1;
 
 
-    public SignUp(RegistTestClass registTestClass,QueryTestClass queryTestClass)
+    public SignUp(RegisterService registTestClass, QueryTestClass queryTestClass)
     {
 
         提交预约Button.addActionListener(new ActionListener()

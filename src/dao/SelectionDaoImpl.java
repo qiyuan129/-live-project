@@ -1,6 +1,7 @@
 package dao;
 
 import model.Selection;
+import util.DBUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -27,13 +28,13 @@ public class SelectionDaoImpl implements SelectionDao {
         try {
            /* INSERT INTO table_name (column1,column2,column3,...)
             VALUES (value1,value2,value3,...);*/
-            conn = DAO.DBUtil.getConnection();
+            conn = DBUtil.getConnection();
             String sql = "INSERT  INTO selection (id,userID,registerID,time,appointmentID)" +
                     " VALUES (?,?,?,?,?)";
             PreparedStatement stmt = conn.prepareStatement(sql);;
 
-            stmt.setString(1,obj.id);
-            stmt.setString(2,String.valueOf(bean.getId()));
+            stmt.setString(1,obj.getId());
+            stmt.setString(2,String.valueOf(obj.getId()));
 
             stmt.executeUpdate();
             stmt.close();
@@ -41,7 +42,6 @@ public class SelectionDaoImpl implements SelectionDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
 
     }
 
@@ -71,10 +71,15 @@ public class SelectionDaoImpl implements SelectionDao {
      * @param appointmentID 某次预约表ID
      * @return 中签名单
      */
-    public List<String> importSelectedList(int appointmentID){
-
+    public List<Selection> importSelectedList(int appointmentID){
+        return  null;
     }
 
+    /**
+     * 根据id属性查找。
+     * @param id
+     * @return
+     */
     @Override
     public Selection selectByID(int id) {
         return null;
