@@ -1,8 +1,10 @@
 package dao;
 
+import model.Appointment;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
+import java.util.List;
 
 public interface AppointmentDAO {
     /**
@@ -31,11 +33,12 @@ public interface AppointmentDAO {
      * @param id
      */
     void getAppointment(int id);
+
     /**
-     * 获取数据库中最新一次预约的id
+     * 获取所有预约项目表
      * @return
      */
-    int getLatestId();
+    List<Appointment> getAppointmentList();
 
     /**
      * 修改一个预约的结束时间
