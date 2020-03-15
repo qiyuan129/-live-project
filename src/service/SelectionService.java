@@ -10,9 +10,13 @@ package service;
 public class SelectionService  {
 
     /**
-     * 产生
+     * 随机产生中签
      */
     void createSelection(){
+
+    }
+
+    int appointmentID(){
 
     }
 
