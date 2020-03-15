@@ -1,5 +1,12 @@
+package 一个有问题的GUI.src;
+
 import java.awt.*;//导入awt包
 import javax.swing.*;//导入swing包
+
+import dao.AdminDaoImpl;
+import model.Admin;
+import util.DBUtil;
+
 import java.awt.event.ActionListener;//导入awt包中的监听器事件包
 import java.awt.event.ActionEvent;//导入awt包中的ActionEvent事件包
 
@@ -8,6 +15,8 @@ public class Login extends JFrame {
     private JButton cancel;
     private JTextField id;
     private JPasswordField password;
+    
+    private static Admin admin;
 
     public Login() {
         JLabel a=new JLabel("管理员登录");
@@ -54,14 +63,10 @@ public class Login extends JFrame {
 
         //获取数据库ID,PASSWORD用于判断登录
         check.addActionListener(new ActionListener() {
-
-            String ID="111";
-            String PASSWORD="111";
-            @SuppressWarnings("deprecation")
-            @Override
             public void actionPerformed(ActionEvent arg0) {
                 // TODO Auto-generated method stub
-                if(id.getText().equals(ID) && new String(password.getPassword()).equals(PASSWORD)){
+            	admin = AdminDaoImpl.adminLogin(id.getText(), password.getText());
+                if(admin.getId() != null){
                     JOptionPane.showMessageDialog(null, "登录成功");
                     new MainPage();
 
@@ -71,7 +76,9 @@ public class Login extends JFrame {
 
             }
         });
+        
     }
+
     public static void main(String[] args) {
         new Login();
 

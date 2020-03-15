@@ -16,10 +16,11 @@ import util.DBUtil;
  * @Version 1.0
  */
 public class AdminDaoImpl implements AdminDao {
+
 	/*
 	 * 管理员登录方法
 	 */
-	public Admin adminLogin(String id, String password) {
+	public static Admin adminLogin(String id, String password) {
 		int i = 0;
 		Admin admin = new Admin();
 		try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement()) {
@@ -38,4 +39,5 @@ public class AdminDaoImpl implements AdminDao {
 		}
 		return admin;
 	}
+
 }
