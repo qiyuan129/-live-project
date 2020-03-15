@@ -12,23 +12,5 @@ import java.util.List;
  * @Version 1.0
  */
 public class AppointmentDaoImpl implements AppointmentDao {
-    @Override
-    public void addAppointment(Appointment appointment) {
 
-    }
-
-    @Override
-    public List<Appointment> select() {
-        return null;
-    }
-
-    @Override
-    public Appointment selectByUserID(int id) {
-        return null;
-    }
-
-    @Override
-    public void deleteByID(int id) {
-
-    }
 }

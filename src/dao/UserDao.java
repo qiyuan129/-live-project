@@ -12,12 +12,35 @@ import java.util.List;
  * @Version 1.0
  */
 public interface UserDao {
-    //增加新用户
+    /**
+     * 新增用户
+     * @param user
+     */
     void add(User user);
-    //筛选所有用户
+
+    /**
+     * 查询所有用户信息
+     * @return 所有用户信息
+     */
     List<User> select();
-    //根据用户ID查找
+
+    /**
+     * 根据UserID查找信息
+     * @param id
+     * @return 若有返回User，没有返回null;
+     */
     User selectByID(int id);
-    //删除用户
-    void deleteById(int id);
+
+    /**
+     * 根据身份证删除信息
+     * @param identity
+     */
+    void deleteByIdentity(String identity);
+
+    /**
+     * 根据身份证号查询
+     * @param identity
+     * @return 若有返回User，没有返回null;
+     */
+    User selectByIdentity(String identity);
 }

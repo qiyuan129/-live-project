@@ -8,4 +8,5 @@ package service;
  * @Version 1.0
  */
 public class AppointmentService {
+
 }

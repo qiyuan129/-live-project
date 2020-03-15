@@ -32,4 +32,9 @@ public class UserDaoImpl implements UserDao {
     public void deleteById(int id) {
 
     }
+
+    @Override
+    public User selectByIdentity(String identity) {
+        return null;
+    }
 }
