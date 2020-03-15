@@ -5,6 +5,7 @@ import com.sun.source.tree.IfTree;
 import dao.*;
 import model.Appointment;
 import model.Register;
+import model.Selection;
 import model.User;
 
 
@@ -31,11 +32,14 @@ public class RegisterService {
      * @param userPhone
      * @return 成功 true 不成功 false
      */
-    public boolean sendMessage(String userName, String userIdentity, String userPhone, int num) {
+    public int sendMessage(String userName, String userIdentity, String userPhone, int num) {
         this.register = new Register();
         this.register.setTime(new Date());
+        int currentAppointmentID = getCurrentAppointmentID();
         UserDao userDao = new UserDaoImpl();
-        this.user = userDao.selectByIdentity(userIdentity);
+        if (isRepead(userIdentity,currentAppointmentID)){
+            return -1;
+        }
         if (this.user == null) {
             this.user.setName(userName);
             this.user.setIdentity(userIdentity);
@@ -43,27 +47,50 @@ public class RegisterService {
             userDao.add(this.user);
         }
         if (this.isSucceed()) {
-            User temp = userDao.selectByIdentity(userIdentity);
+            User temp = userDao.selectByIdentityAndCurrentAPPID(userIdentity,currentAppointmentID);
             this.register.setUserID(temp.getId());
             this.register.setMask(num);
             RegisterDao registerDao = new RegisterDaoImpl();
             registerDao.addRegister(this.register);
+            Register te = registerDao.selectByUserID(temp.getId());
+            return te.getId();
+        }
+        return -1;
+    }
+
+    private boolean isSucceed() {
+        int currentId = getCurrentAppointmentID();
+        if ((currentId - getLastSelectionOfAppID()) > 3) {
             return true;
         }
         return false;
     }
 
-    private boolean isSucceed() {
-        int currentId = 0;
+    private int getCurrentAppointmentID(){
+        int currentID = 0;
         AppointmentDAO appointmentDAO = new AppointmentDaoImpl();
         List<Appointment> appointments = appointmentDAO.getAppointmentList();
-        for (Appointment a : appointments) {
-            if (this.register.getTime().after(a.getStart()) && this.register.getTime().before(a.getEnd())) {
-                currentId = a.getId();
+        for(Appointment appointment : appointments){
+            if (this.register.getTime().after(appointment.getStart())&&this.register.getTime().before(appointment.getEnd())){
+                currentID = appointment.getId();
             }
         }
-        if ((currentId - Integer.parseInt(this.user.getAppointmentID())) > 3) {
-            return true;
+        return currentID;
+    }
+
+    private int getLastSelectionOfAppID(){
+        SelectionDao selectionDao = new SelectionDaoImpl();
+        Selection selection = selectionDao.selectByID(this.user.getLastSelectionID());
+        return selection.getAppointmentID();
+    }
+
+    private boolean isRepead(String identity, int currentAppID){
+        UserDao userDao = new UserDaoImpl();
+        List<User> users = userDao.selectByIdentity(identity);
+        for (User user : users){
+            if (user.getAppointmentID() == currentAppID){
+                return true;
+            }
         }
         return false;
     }

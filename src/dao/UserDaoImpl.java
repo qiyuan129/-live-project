@@ -29,12 +29,21 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void deleteById(int id) {
+    public void deleteByIdentity(String identity) {
 
+    }
+
+
+
+    @Override
+    public List<User> selectByIdentity(String identity) {
+        return null;
     }
 
     @Override
-    public User selectByIdentity(String identity) {
+    public User selectByIdentityAndCurrentAPPID(String identity, int currentAppID) {
         return null;
     }
+
+
 }

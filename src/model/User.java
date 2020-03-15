@@ -14,7 +14,16 @@ public class User {
     String identity;
     String phone;
     int appointmentID;
-    
+    int lastSelectionID;
+
+	public int getLastSelectionID() {
+		return lastSelectionID;
+	}
+
+	public void setLastSelectionID(int lastSelectionID) {
+		this.lastSelectionID = lastSelectionID;
+	}
+
 	public int getId() {
 		return id;
 	}

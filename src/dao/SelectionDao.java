@@ -1,5 +1,7 @@
 package dao;
 
+import model.Selection;
+
 /**
  * @ClassName Selection
  * @Description TODO
@@ -33,6 +35,7 @@ public interface SelectionDao {
      */
     public List<Selection> importSelectedList(int appointmentID);
 
+    public Selection selectByID(int id);
 
 }
 
