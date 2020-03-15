@@ -1,4 +1,3 @@
-package 一个有问题的GUI.src;
 
 import java.awt.*;//导入awt包
 import javax.swing.*;//导入swing包
