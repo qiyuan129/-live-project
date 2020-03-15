@@ -1,10 +1,9 @@
-package DAO;
+package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -12,8 +11,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import model.Appointment;
 import model.Register;
+import util.DBUtil;
 
 
 public class RegisterDaoImpl implements RegisterDao {

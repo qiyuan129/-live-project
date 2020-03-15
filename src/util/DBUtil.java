@@ -1,4 +1,4 @@
-package DAO;
+package util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -49,7 +49,4 @@ public class DBUtil {
 		}
 	}
 
-	public static void main(String[] args) throws SQLException {
-		System.out.println(getConnection());
-	}
 }

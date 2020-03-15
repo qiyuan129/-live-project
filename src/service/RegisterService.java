@@ -50,6 +50,7 @@ public class RegisterService {
             User temp = userDao.selectByIdentityAndCurrentAPPID(userIdentity,currentAppointmentID);
             this.register.setUserID(temp.getId());
             this.register.setMask(num);
+            this.register.setAppointment(currentAppointmentID);
             RegisterDao registerDao = new RegisterDaoImpl();
             registerDao.addRegister(this.register);
             Register te = registerDao.selectByUserID(temp.getId());

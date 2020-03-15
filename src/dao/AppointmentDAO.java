@@ -1,11 +1,11 @@
-package DAO;
+package dao;
 
 import java.util.Date;
 import java.util.List;
 
 import model.Appointment;
 
-public interface AppointmentDao {
+public interface AppointmentDAO {
 	/**
      * 新建一次预约项目
      * @param begin

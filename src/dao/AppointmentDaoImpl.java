@@ -1,4 +1,4 @@
-package DAO;
+package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,8 +13,10 @@ import java.util.Date;
 import java.util.List;
 
 import model.Appointment;
+import util.DBUtil;
 
-public class AppointmentDaoImpl implements AppointmentDao{
+
+public class AppointmentDaoImpl implements AppointmentDAO {
 
 	
 	
