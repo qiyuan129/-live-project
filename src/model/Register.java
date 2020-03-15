@@ -2,13 +2,6 @@ package model;
 
 import java.util.Date;
 
-/**
- * @ClassName Reigster
- * @Description TODO
- * @Author mingll
- * @Date 2020/3/15 1:59 下午
- * @Version 1.0
- */
 public class Register {
     int id;
     int userID;
@@ -16,7 +9,23 @@ public class Register {
     int appointment;
     Date time;
 
-    public int getId() {
+    public Register(int i,int u, int m, int a, Date t) {
+    	this.id = i;
+    	this.userID = u;
+    	this.mask = m;
+    	this.appointment = a;
+    	this.time = t;
+	}
+    
+    public Register(int u, int m, int a, Date t) {
+    	this.id = 0;
+    	this.userID = u;
+    	this.mask = m;
+    	this.appointment = a;
+    	this.time = t;
+	}
+
+	public int getId() {
         return id;
     }
 

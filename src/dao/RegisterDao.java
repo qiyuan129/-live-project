@@ -1,17 +1,10 @@
-package dao;
+package DAO;
 
-import model.Appointment;
-import model.Register;
-
+import java.util.Date;
 import java.util.List;
 
-/**
- * @ClassName Reigster
- * @Description TODO
- * @Author mingll
- * @Date 2020/3/15 2:01 下午
- * @Version 1.0
- */
+import model.Register;
+
 public interface RegisterDao {
     /**
      * 新增预约信息
@@ -24,7 +17,6 @@ public interface RegisterDao {
      * @return 所有预约信息
      */
     List<Register> select();
-    //根据用户id查找预约信息
 
     /**
      * 根据用户id查找预约信息
