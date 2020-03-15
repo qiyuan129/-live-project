@@ -1,5 +1,7 @@
 package model;
 
+import java.time.LocalDateTime;
+
 /**
  * @ClassName appointment
  * @Description TODO
@@ -8,4 +10,10 @@ package model;
  * @Version 1.0
  */
 public class Appointment {
+    int id;
+    LocalDateTime start;
+    LocalDateTime end;
+    int mask;
+    int maskMAX;
+
 }
