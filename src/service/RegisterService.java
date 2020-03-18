@@ -1,7 +1,6 @@
 package service;
 
 
-import com.sun.source.tree.IfTree;
 import dao.*;
 import model.Appointment;
 import model.Register;
@@ -68,7 +67,7 @@ public class RegisterService {
 
     private int getCurrentAppointmentID(){
         int currentID = 0;
-        AppointmentDAO appointmentDAO = new AppointmentDaoImpl();
+        AppointmentDao appointmentDAO = new AppointmentDaoImpl();
         List<Appointment> appointments = appointmentDAO.getAppointmentList();
         for(Appointment appointment : appointments){
             if (this.register.getTime().after(appointment.getStart())&&this.register.getTime().before(appointment.getEnd())){

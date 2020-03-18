@@ -9,6 +9,9 @@ public class Register {
     int appointment;
     Date time;
 
+    public Register(){
+
+    }
     public Register(int i,int u, int m, int a, Date t) {
     	this.id = i;
     	this.userID = u;

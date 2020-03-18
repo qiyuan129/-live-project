@@ -1,10 +1,9 @@
 package service;
 
 import dao.AppointmentDao;
-import dao.AppointmentDaoImpl;
 import model.Appointment;
-
 import java.util.Date;
+import dao.AppointmentDaoImpl;
 import java.util.List;
 
 /**
