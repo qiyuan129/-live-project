@@ -1,6 +1,7 @@
 package service;
 
 
+import com.sun.source.tree.IfTree;
 import dao.*;
 import model.Appointment;
 import model.Register;
@@ -10,6 +11,7 @@ import model.User;
 
 import java.util.Date;
 import java.util.List;
+import java.util.function.IntToDoubleFunction;
 
 /**
  * @ClassName ReigsterService
@@ -38,10 +40,6 @@ public class RegisterService {
         if (isRepead(userIdentity,currentAppointmentID)){
             return -1;
         }
-        if (!UserService.isIDValidator(userIdentity)||UserService.isTruePhone(userPhone)) {
-            return -1;
-        }
-
         if (this.user == null) {
             this.user.setName(userName);
             this.user.setIdentity(userIdentity);
@@ -52,7 +50,6 @@ public class RegisterService {
             User temp = userDao.selectByIdentityAndCurrentAPPID(userIdentity,currentAppointmentID);
             this.register.setUserID(temp.getId());
             this.register.setMask(num);
-            this.register.setAppointment(currentAppointmentID);
             RegisterDao registerDao = new RegisterDaoImpl();
             registerDao.addRegister(this.register);
             Register te = registerDao.selectByUserID(temp.getId());
@@ -71,7 +68,7 @@ public class RegisterService {
 
     private int getCurrentAppointmentID(){
         int currentID = 0;
-        AppointmentDao appointmentDAO = new AppointmentDaoImpl();
+        AppointmentDAO appointmentDAO = new AppointmentDaoImpl();
         List<Appointment> appointments = appointmentDAO.getAppointmentList();
         for(Appointment appointment : appointments){
             if (this.register.getTime().after(appointment.getStart())&&this.register.getTime().before(appointment.getEnd())){

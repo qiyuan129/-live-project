@@ -1,4 +1,8 @@
+<<<<<<< HEAD
+package Dao;
+=======
 package dao;
+>>>>>>> 70f126be75391b80bae63d23c57ef7f95a4532cf
 
 import java.util.Date;
 import java.util.List;
@@ -30,5 +34,10 @@ public interface RegisterDao {
      * @param id
      */
     void deleteByID(int id);
+
+    /*
+	 * 根据预约id返回登记结果集
+	 */
+	List<Register> getByAppointmentID(int id);
 
 }

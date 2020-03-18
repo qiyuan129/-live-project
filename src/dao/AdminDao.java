@@ -11,5 +11,5 @@ import model.Admin;
  */
 public interface AdminDao {
 	//管理员登陆
-	//Admin adminLogin(String id, String password);
+	void adminLogin(String id, String password);
 }
