@@ -43,6 +43,7 @@ public class RegisterService {
         }
 
         if (this.user == null) {
+            this.user = new User();
             this.user.setName(userName);
             this.user.setIdentity(userIdentity);
             this.user.setPhone(userPhone);
@@ -50,9 +51,11 @@ public class RegisterService {
         }
         if (this.isSucceed()) {
             User temp = userDao.selectByIdentityAndCurrentAPPID(userIdentity,currentAppointmentID);
+            this.register = new Register();
             this.register.setUserID(temp.getId());
             this.register.setMask(num);
             this.register.setAppointment(currentAppointmentID);
+            this.register.setTime(new Date());
             RegisterDao registerDao = new RegisterDaoImpl();
             registerDao.addRegister(this.register);
             Register te = registerDao.selectByUserID(temp.getId());
@@ -63,7 +66,11 @@ public class RegisterService {
 
     private boolean isSucceed() {
         int currentId = getCurrentAppointmentID();
-        if ((currentId - getLastSelectionOfAppID()) > 3) {
+        Selection selection = getLastSelection();
+        if (selection == null){
+            return true;
+        }
+        if ((currentId - selection.getAppointmentID()) > 3) {
             return true;
         }
         return false;
@@ -81,10 +88,10 @@ public class RegisterService {
         return currentID;
     }
 
-    private int getLastSelectionOfAppID(){
+    private Selection getLastSelection(){
         SelectionDao selectionDao = new SelectionDaoImpl();
         Selection selection = selectionDao.selectByID(this.user.getLastSelectionID());
-        return selection.getAppointmentID();
+        return selection;
     }
 
     private boolean isRepead(String identity, int currentAppID){
@@ -97,5 +104,6 @@ public class RegisterService {
         }
         return false;
     }
+
 }
 

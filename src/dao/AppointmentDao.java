@@ -43,5 +43,8 @@ public interface AppointmentDao {
      * 修改一个预约的结束时间
      * @param time
      */
-    void setEndTime(Date time);
+    void setEndTime(int id,Date time);
+    void setMaskNumber(int id,int number);
+
+    Appointment getLatestAppointment();
 }

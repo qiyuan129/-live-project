@@ -21,15 +21,11 @@ public class RegisterDaoImpl implements RegisterDao {
 
 	@Override
 	public void addRegister(Register register) {
-		DBUtil dbu=new DBUtil();
-		
-		Connection conn;
-		
+
 		try {
+			Connection conn = DBUtil.getConnection();
 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	        String datetime = df.format(register.getTime());
-			
-			conn = dbu.getConnection();
 			String sql="insert into register(userID , mask , appointmentID , time) value(?,?,?,?)";
 			PreparedStatement pstmt=(PreparedStatement) conn.prepareStatement(sql);
 			pstmt.setInt(1, register.getUserID());
@@ -37,8 +33,6 @@ public class RegisterDaoImpl implements RegisterDao {
 			pstmt.setInt(3,register.getAppointment());
 			pstmt.setObject(4, datetime);
 			pstmt.executeUpdate();
-
-			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

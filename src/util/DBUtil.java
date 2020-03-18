@@ -12,7 +12,7 @@ public class DBUtil {
 	static String database = "database";
 	static String encoding = "UTF-8";
 	static String loginName = "root";
-	static String password = "zjb123456";
+	static String password = "Userpassword";
 
 	static {
 		try {
@@ -23,7 +23,7 @@ public class DBUtil {
 	}
 
 	public static Connection getConnection() throws SQLException {
-		String url = String.format("jdbc:mysql://%s:%d/%s?characterEncoding=%s", ip, port, database, encoding);
+		String url = String.format("jdbc:mysql://%s:%d/%s?characterEncoding=%s&serverTimezone=CST", ip, port, database, encoding);
 		return DriverManager.getConnection(url, loginName, password);
 	}
 
@@ -48,5 +48,6 @@ public class DBUtil {
 			ex.printStackTrace();
 		}
 	}
+
 
 }

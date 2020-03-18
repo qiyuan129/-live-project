@@ -17,7 +17,7 @@ public class SelectionService  {
     }
 
     int appointmentID(){
-
+        return 0;
     }
 
 

@@ -27,20 +27,15 @@ public class UserDaoImpl implements UserDao {
         * 增加新用户
         * @param user
         */
-        	String sql = "insert into user values(null ,? ,? ,? ,?)";
+        	String sql = "insert into user values(null ,? ,? ,? ,?,?)";
             try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql)) {
                 ps.setString(1, user.getName());
                 ps.setString(2, user.getIdentity());
                 ps.setString(3, user.getPhone());
                 ps.setInt(4, user.getAppointmentID());
-                ps.execute();
-                ResultSet rs = ps.getGeneratedKeys();
-                if (rs.next()) {
-                    int id = rs.getInt(1);
-                    user.setId(id);
-                }
+                ps.setInt(5,user.getLastSelectionID());
+                ps.executeUpdate();
             } catch (SQLException e) {
-
                 e.printStackTrace();
             }
         }
@@ -153,7 +148,6 @@ public class UserDaoImpl implements UserDao {
 	    	Connection c = DBUtil.getConnection(); 
 	    	PreparedStatement ps = c.prepareStatement(sql);
 			ps.setString(1,identity);
-			ps.executeUpdate();
 	    	//try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement()) {
             //String sql = "select * from user";
             ResultSet rs = ps.executeQuery();
@@ -182,22 +176,25 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User selectByIdentityAndCurrentAPPID(String identity, int currentAppID) {
     	String sql = "select * from user where identity=? and appointmentID=?";
+    	User user = new User();
 	    try {
 	    	Connection c = DBUtil.getConnection(); 
 	    	PreparedStatement ps = c.prepareStatement(sql);
 			ps.setString(1, identity);
 			ps.setInt(2,currentAppID);
-			ps.executeUpdate();
-	    	if (ps!=null) {
-	    		User user_obj = new User();
-            	return user_obj;
+			ResultSet rs = ps.executeQuery();
+	    	if (rs.next()) {
+	    		user.setId(rs.getInt(1));
+	    		user.setName(rs.getString(2));
+	    		user.setIdentity(rs.getString(3));
+	    		user.setPhone(rs.getString(4));
+	    		user.setAppointmentID(rs.getInt(5));
 	    	}
         }
         catch (SQLException e) {
-
             e.printStackTrace();
         }
-        return null;
+        return user;
     }
 
 
