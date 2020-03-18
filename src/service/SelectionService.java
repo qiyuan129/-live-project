@@ -20,7 +20,7 @@ public class SelectionService  {
     /**
      * 产生中签
      */
-    public void createSelection(){
+    public void doSelection(){
         AppointmentDaoImpl appointDao = new AppointmentDaoImpl();//获取一个AppointmentDaoImpl对象
         //得到最新预约对象，里面包含预约时间段等数据
         Appointment lastAppointment =  appointDao.getLastAppointment();
