@@ -1,15 +1,6 @@
-<<<<<<< HEAD
-package Dao;
-=======
 package dao;
->>>>>>> 70f126be75391b80bae63d23c57ef7f95a4532cf
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,44 +9,64 @@ import java.util.Date;
 import java.util.List;
 
 import model.Appointment;
-<<<<<<< HEAD
-import model.Register;
-=======
 import util.DBUtil;
->>>>>>> 70f126be75391b80bae63d23c57ef7f95a4532cf
 
 public class AppointmentDaoImpl implements AppointmentDao{
-
-	private Connection conn = null;
-	private PreparedStatement pstmt = null;
-	private ResultSet rs = null;
-	private DBUtil dbu=new DBUtil();
+	Connection conn=null;
+	PreparedStatement ps=null;
+	ResultSet rs=null;
+	
+	
+	
 	
 	@Override
 	public void addAppointment(Date begin, Date end, int totalMask, int maskMAX) {
-		
 		try {
 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	        String beginString = df.format(begin);
 	        String endString = df.format(end);
 			
-			conn = dbu.getConnection();
+			conn =DBUtil.getConnection();
 			String sql="insert into appointment(start , end , mask , maskMAX) value(?,?,?,?)";
-			pstmt=(PreparedStatement) conn.prepareStatement(sql);
-			pstmt.setObject(1, beginString);
-			pstmt.setObject(2, endString);
-			pstmt.setInt(3, totalMask);
-			pstmt.setInt(4,maskMAX);
-			pstmt.executeUpdate();
+			ps=(PreparedStatement) conn.prepareStatement(sql);
+			ps.setObject(1, beginString);
+			ps.setObject(2, endString);
+			ps.setInt(3, totalMask);
+			ps.setInt(4,maskMAX);
+			ps.executeUpdate();
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} finally {
-			DBUtil.close(rs, pstmt, conn);
+		}
+		finally {
+			DBUtil.close(rs,ps,conn);
 		}
 		
 	}
+
+	@Override
+	public void addAdminAppointment(String beginString, String endString, int totalMask, int maskMAX) {
+		try {
+			conn =DBUtil.getConnection();
+			String sql="insert into appointment(start , end , mask , maskMAX) value(?,?,?,?)";
+			ps=(PreparedStatement) conn.prepareStatement(sql);
+			ps.setObject(1, beginString);
+			ps.setObject(2, endString);
+			ps.setInt(3, totalMask);
+			ps.setInt(4,maskMAX);
+			ps.executeUpdate();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally {
+			DBUtil.close(rs,ps,conn);
+		}
+
+	}
+
 
 	@Override
 	public void addAppointment(Date begin, Date end) {
@@ -64,20 +75,21 @@ public class AppointmentDaoImpl implements AppointmentDao{
 	        String beginString = df.format(begin);
 	        String endString = df.format(end);
 			
-			conn = dbu.getConnection();
+			conn = DBUtil.getConnection();
 			String sql="insert into appointment(start , end , mask , maskMAX) value(?,?,?,?)";
-			pstmt=(PreparedStatement) conn.prepareStatement(sql);
-			pstmt.setObject(1, beginString);
-			pstmt.setObject(2, endString);
-			pstmt.setInt(3, 1000);
-			pstmt.setInt(4,3);
-			pstmt.executeUpdate();
+			ps=(PreparedStatement) conn.prepareStatement(sql);
+			ps.setObject(1, beginString);
+			ps.setObject(2, endString);
+			ps.setInt(3, 1000);
+			ps.setInt(4,3);
+			ps.executeUpdate();
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} finally {
-			DBUtil.close(rs, pstmt, conn);
+		}
+		finally {
+			DBUtil.close(rs,ps,conn);
 		}
 		
 	}
@@ -95,20 +107,21 @@ public class AppointmentDaoImpl implements AppointmentDao{
 	        String beginString = df.format(now);
 	        String endString = df.format(after);
 			
-			conn = dbu.getConnection();
+			conn = DBUtil.getConnection();
 			String sql="insert into appointment(start , end , mask , maskMAX) value(?,?,?,?)";
-			pstmt=(PreparedStatement) conn.prepareStatement(sql);
-			pstmt.setObject(1, beginString);
-			pstmt.setObject(2, endString);
-			pstmt.setInt(3, 1000);
-			pstmt.setInt(4,3);
-			pstmt.executeUpdate();
+			ps=(PreparedStatement) conn.prepareStatement(sql);
+			ps.setObject(1, beginString);
+			ps.setObject(2, endString);
+			ps.setInt(3, 1000);
+			ps.setInt(4,3);
+			ps.executeUpdate();
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} finally {
-			DBUtil.close(rs, pstmt, conn);
+		}
+		finally {
+			DBUtil.close(rs,ps,conn);
 		}
 	}
 
@@ -116,12 +129,12 @@ public class AppointmentDaoImpl implements AppointmentDao{
 	public Appointment getAppointment(int id) {
 		Appointment appointment=null;
 		try {
-			conn = dbu.getConnection();
+			conn =DBUtil.getConnection();
 			String sql="SELECT * from appointment WHERE id=?";
-			pstmt=(PreparedStatement) conn.prepareStatement(sql);
-			pstmt.setInt(1, id);
+			ps=(PreparedStatement) conn.prepareStatement(sql);
+			ps.setInt(1, id);
 			
-			rs = pstmt.executeQuery();
+			rs = ps.executeQuery();
             while (rs.next()) {
             	Timestamp startStamp = rs.getTimestamp(2);
             	Timestamp endStamp = rs.getTimestamp(3);
@@ -132,8 +145,9 @@ public class AppointmentDaoImpl implements AppointmentDao{
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} finally {
-			DBUtil.close(rs, pstmt, conn);
+		}
+		finally {
+			DBUtil.close(rs,ps,conn);
 		}
 		return appointment;
 	}
@@ -144,11 +158,12 @@ public class AppointmentDaoImpl implements AppointmentDao{
 		List<Appointment> list= new ArrayList<Appointment>();
 		Appointment appointment=null;
 		try {
-			conn = dbu.getConnection();
+			conn =DBUtil.getConnection();
 			String sql="SELECT * from appointment";
-			pstmt=(PreparedStatement) conn.prepareStatement(sql);			
-			rs = pstmt.executeQuery();
+			ps=(PreparedStatement) conn.prepareStatement(sql);
+			rs = ps.executeQuery();
             while (rs.next()) {
+
             	Timestamp startStamp = rs.getTimestamp(2);
             	Timestamp endStamp = rs.getTimestamp(3);
             	
@@ -159,49 +174,85 @@ public class AppointmentDaoImpl implements AppointmentDao{
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} finally {
-			DBUtil.close(rs, pstmt, conn);
+		}
+		finally {
+			DBUtil.close(rs,ps,conn);
 		}
 		return list;
 		
 	}
-	
-	
+
+	@Override
+	public void setEndTime(int id,Date time) {
+		Appointment appointment=null;
+		String sql="UPDATE appointment SET end=? where id=?";
+		try{
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String endString = df.format(time);
+
+			conn=DBUtil.getConnection();
+			ps=conn.prepareStatement(sql);
+			ps.setObject(1,endString);
+			ps.setInt(2,id);
+
+			int rsCount=ps.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally {
+			DBUtil.close(rs,ps,conn);
+		}
+
+
+	}
+
+	@Override
+	public void setMaskNumber(int id, int number) {
+		Appointment appointment=null;
+		String sql="UPDATE appointment SET mask=? where id=?";
+		try{
+
+			conn=DBUtil.getConnection();
+			ps=conn.prepareStatement(sql);
+			ps.setInt(1,number);
+			ps.setInt(2,id);
+
+			int rsCount=ps.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally {
+			DBUtil.close(rs,ps,conn);
+		}
+	}
+
 	@Override
 	public Appointment getLatestAppointment() {
 		Appointment appointment=null;
 
 		try {
-			Connection conn=DBUtil.getConnection();
-			String sql="SELECT * FROM appointment ORDER BY start DESC";
-			pstmt=(PreparedStatement) conn.prepareStatement(sql);	
-			rs=pstmt.executeQuery();
-			
-			if(rs.next()){
-				Timestamp startStamp = rs.getTimestamp(2);
-				Timestamp endStamp = rs.getTimestamp(3);
+			conn=DBUtil.getConnection();
+			ps= (PreparedStatement) conn.createStatement();
 
-				appointment = new Appointment(rs.getInt(1),new Date(startStamp.getTime()),new Date(endStamp.getTime()),
+			String sql="SELECT * FROM appointment ORDER BY start DESC";
+			rs=ps.executeQuery(sql);
+
+			if(rs.next()){
+				Date startStamp = rs.getTimestamp(2);
+				Date endStamp = rs.getTimestamp(3);
+
+				appointment = new Appointment(rs.getInt(1),startStamp,endStamp,
 											rs.getInt(4),rs.getInt(5));
 			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			DBUtil.close(rs, pstmt, conn);
+		}
+		finally {
+			DBUtil.close(rs,ps,conn);
 		}
 		return appointment;
 	}
-	
-	
-	
-
-	@Override
-	public void setEndTime(Date time) {
-		// TODO Auto-generated method stub
-
-		
-		
-	}
-	
 }
