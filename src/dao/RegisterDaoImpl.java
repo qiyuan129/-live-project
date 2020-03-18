@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.mysql.cj.xdevapi.DbDoc;
 import model.Appointment;
 import model.Register;
 import util.DBUtil;
@@ -22,7 +23,6 @@ public class RegisterDaoImpl implements RegisterDao {
 	private Connection conn = null;
 	private PreparedStatement pstmt = null;
 	private ResultSet rs = null;
-	private DBUtil dbu=new DBUtil();
 
 	@Override
 	public void addRegister(Register register) {
@@ -31,7 +31,7 @@ public class RegisterDaoImpl implements RegisterDao {
 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	        String datetime = df.format(register.getTime());
 			
-			conn = dbu.getConnection();
+			conn = DBUtil.getConnection();
 			String sql="insert into register(userID , mask , appointmentID , time) value(?,?,?,?)";
 			pstmt=(PreparedStatement) conn.prepareStatement(sql);
 			pstmt.setInt(1, register.getUserID());
@@ -54,7 +54,7 @@ public class RegisterDaoImpl implements RegisterDao {
 		List<Register> list= new ArrayList<Register>();
 		Register register=null;
 		try {
-			conn = dbu.getConnection();
+			conn = DBUtil.getConnection();
 			String sql="SELECT * from register";
 			pstmt=(PreparedStatement) conn.prepareStatement(sql);			
 			rs = pstmt.executeQuery();
@@ -78,7 +78,7 @@ public class RegisterDaoImpl implements RegisterDao {
 	public Register selectByUserID(int id) {
 		Register register=null;
 		try {
-			conn = dbu.getConnection();
+			conn = DBUtil.getConnection();
 			String sql="SELECT * from register WHERE userID=?";
 			pstmt=(PreparedStatement) conn.prepareStatement(sql);
 			pstmt.setInt(1, id);
@@ -103,7 +103,7 @@ public class RegisterDaoImpl implements RegisterDao {
 	public void deleteByID(int id) {
 		Register register=null;
 		try {
-			conn = dbu.getConnection();
+			conn = DBUtil.getConnection();
 			String sql="delete from register where id=? "; 
 			pstmt=(PreparedStatement) conn.prepareStatement(sql);
 			pstmt.setInt(1, id);

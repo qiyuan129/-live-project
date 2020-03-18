@@ -1,13 +1,14 @@
 package service;
 
-import dao.AppointmentDaoImpl;
-import dao.RegisterDaoImpl;
-import dao.SelectionDaoImpl;
+import dao.*;
 import model.Appointment;
 import model.Register;
 import model.Selection;
+import model.User;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 /**
  * @ClassName SelectionService
@@ -16,43 +17,88 @@ import java.util.ArrayList;
  * @Date 2020/3/15 2:03 下午
  * @Version 1.0
  */
-public class SelectionService  {
+public class SelectionService {
     /**
      * 产生中签
      */
-    public void createSelection(){
+    public void createSelection() {
+        List<Integer> integers = new ArrayList<>();
         AppointmentDaoImpl appointDao = new AppointmentDaoImpl();//获取一个AppointmentDaoImpl对象
         //得到最新预约对象，里面包含预约时间段等数据
-        Appointment lastAppointment =  appointDao.getLatestAppointment();
+        Appointment lastAppointment = appointDao.getLatestAppointment();
         RegisterDaoImpl registerDao = new RegisterDaoImpl();
         //获取候选者列表 条件 register.预约表id= lastAppointment.id
-        ArrayList<Register> candidate= (ArrayList<Register>) registerDao.getByAppointmentID(lastAppointment.getId());
-        SelectionDaoImpl selectDao = new SelectionDaoImpl();
-        //总的口罩数量
-        int totalRespirator = lastAppointment.getMask();
-        ArrayList<Selection> selected = new  ArrayList<Selection>();
-        int cnt=0;
-        for(int i=0;i < candidate.size()&& cnt < totalRespirator;i++){
-            //用户申请的口罩数量要小于规定数量，否则直接跳过这个用户
-            if(candidate.get(i).getMask()<=lastAppointment.getMaskMAX()){
-                cnt+=candidate.get(i).getMask();//口罩数量足够才能预约
-                if(cnt<=totalRespirator){
-                    Selection selItem = new Selection();
-                    selItem.setUserID(candidate.get(i).getUserID());//userID
-                    selItem.setRegisterID(candidate.get(i).getId());//登记表id
-                    selItem.setTime(candidate.get(i).getTime());
-                    selItem.setAppointmentID(candidate.get(i).getAppointment());//AppointmentID
-                    selected.add(selItem);
+        List<Register> candidate = registerDao.getByAppointmentID(lastAppointment.getId());
+        int min = getMinRegisterID(candidate);
+        int max = getMaxRegisterID(candidate);
+        for (int i = 0; i < 2; i++){
+            int random = random(min, max);
+            if (isExist(integers,random)){
+                i--;
+                continue;
+            }
+            integers.add(random);
+            for (Register r : candidate) {
+                if (r.getId() == random){
+                    Selection selection = new Selection();
+                    selection.setRegisterID(r.getId());
+                    selection.setAppointmentID(r.getAppointment());
+                    selection.setUserID(r.getUserID());
+                    selection.setTime(r.getTime());
+                    SelectionDao selectionDao = new SelectionDaoImpl();
+                    selectionDao.add(selection);
+                    UserDao userDao = new UserDaoImpl();
+                    User user = userDao.selectByID(r.getUserID());
+                    Selection temp =  selectionDao.findByRegisterID(r.getId());
+                    user.setLastSelectionID(temp.getId());
+                    userDao.updateUser(user);
                 }
             }
-
         }
-        selectDao.addSelections(selected);//写入数据库
-        //修改每个中签user的lastSelectionID
-        //先获取这次插入的所有记录
-        ArrayList<Selection> SelectedList=selectDao.importSelectedList(lastAppointment.getId());
-        //然后修改所有中签的user的lastSelectionID
-        selectDao.updateUserLastSelectionID(SelectedList);
+    }
+
+    public User isExistSelection(int registerID) {
+        User user = null;
+        SelectionDao selectionDao = new SelectionDaoImpl();
+        Selection selection = selectionDao.findByRegisterID(registerID);
+        if (selection != null) {
+            UserDao userDao = new UserDaoImpl();
+            user = userDao.selectByID(selection.getUserID());
+        }
+        return user;
+    }
+
+    private int getMinRegisterID(List<Register> list) {
+        int min = 999999999;
+        for (Register r : list) {
+            if (min > r.getId()) {
+                min = r.getId();
+            }
+        }
+        return min;
+    }
+
+    private int getMaxRegisterID(List<Register> list) {
+        int max = 0;
+        for (Register r : list) {
+            if (max < r.getId()) {
+                max = r.getId();
+            }
+        }
+        return max;
+    }
+
+    private int random(int a, int b){
+        Random random = new Random();
+        int range = b - a;
+        return random.nextInt(range) + a;
+    }
+
+    private boolean isExist(List<Integer> list, int i){
+        if (list.contains(i)){
+            return true;
+        }
+        return false;
     }
 
 }

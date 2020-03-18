@@ -46,4 +46,6 @@ public interface UserDao {
 
     User selectByIdentityAndCurrentAPPID(String identity, int currentAppID);
 
+    void updateUser(User user);
+
 }

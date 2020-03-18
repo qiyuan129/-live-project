@@ -1,3 +1,5 @@
+package view;
+
 import java.awt.*;//导入awt包
 import javax.swing.*;//导入swing包
 import javax.swing.GroupLayout.Alignment;

@@ -4,6 +4,7 @@ import dao.SelectionDao;
 import dao.SelectionDaoImpl;
 import model.Selection;
 import service.RegisterService;
+import service.SelectionService;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -19,7 +20,7 @@ public class Program
         int height=500;
 
         RegisterService registTestClass = new RegisterService();
-        SelectionDaoImpl queryTestClass=new SelectionDaoImpl();
+        SelectionService queryTestClass=new SelectionService();
         JFrame frame = new JFrame("SignUp");
         frame.setContentPane(new SignUp(registTestClass,queryTestClass).userPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

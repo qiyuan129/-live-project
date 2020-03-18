@@ -132,7 +132,6 @@ public class UserDaoImpl implements UserDao {
     @Override
     public List<User> selectByIdentity(String identity) {
         ArrayList<User> users=new ArrayList<>();
-        User user=new User();
         try {
             conn = DBUtil.getConnection();
             String sql = "select * from user where identity=?";
@@ -140,6 +139,7 @@ public class UserDaoImpl implements UserDao {
             stmt.setObject(1,identity);
             rs = stmt.executeQuery();
             while (rs.next()) {
+                User user = new User();
                 user.setId(rs.getInt(1));
                 user.setName(rs.getString(2));
                 user.setIdentity(rs.getString(3));
@@ -181,5 +181,21 @@ public class UserDaoImpl implements UserDao {
             DBUtil.close(rs,stmt,conn);
         }
         return user;
+    }
+
+    @Override
+    public void updateUser(User user) {
+        String sql = "update user set lastSelectionID = ? where id = ?";
+        try {
+            conn = DBUtil.getConnection();
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1,user.getLastSelectionID());
+            stmt.setInt(2,user.getId());
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            DBUtil.close(rs,stmt,conn);
+        }
     }
 }

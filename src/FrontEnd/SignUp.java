@@ -1,11 +1,12 @@
 package FrontEnd;
 
-import dao.AppointmentDao;
-import dao.AppointmentDaoImpl;
-import dao.SelectionDao;
-import dao.SelectionDaoImpl;
+import dao.*;
+import model.Register;
+import model.User;
 import service.AppointmentService;
 import service.RegisterService;
+import service.SelectionService;
+import view.Login;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -32,9 +33,10 @@ public class SignUp extends JFrame
     private JComboBox numberComboBox1;
     private JButton addAppointmentBtn;
     private JButton endAppointmentBtn;
+    private JButton 管理员登陆Button;
 
 
-    public SignUp(RegisterService registTestClass, SelectionDaoImpl queryTestClass)
+    public SignUp(RegisterService registTestClass, SelectionService queryTestClass)
     {
         提交预约Button.addActionListener(new ActionListener()
         {
@@ -98,13 +100,15 @@ public class SignUp extends JFrame
                     try
                     {
                         registID = Integer.parseInt(registIDTextField5.getText());
-                        ArrayList<Object> certificInfo = new ArrayList<>();
-                        if ((certificInfo = queryTestClass.isExistSelection(registID)) != null)
+                        User user = null;
+                        if ((user = queryTestClass.isExistSelection(registID)) != null)
                         {
-                            String name = certificInfo.get(0).toString();
-                            String ID = certificInfo.get(1).toString();
-                            String phone = certificInfo.get(2).toString();
-                            int number = Integer.parseInt(certificInfo.get(3).toString());
+                            RegisterDao service = new RegisterDaoImpl();
+                            Register register = service.selectByUserID(user.getId());
+                            String name = user.getName();
+                            String ID = user.getIdentity();
+                            String phone = user.getPhone();
+                            int number = register.getMask();
                             JOptionPane
                                 .showMessageDialog(null, "您的购买凭证如下:"
                                     + "\n姓名:" + name
@@ -136,13 +140,28 @@ public class SignUp extends JFrame
             public void actionPerformed(ActionEvent e) {
                 AppointmentDao appointmentDao=new AppointmentDaoImpl();
                 appointmentDao.addAppointment();
+                JOptionPane
+                        .showMessageDialog(null, "开启新的预约", "提示",
+                                JOptionPane.WARNING_MESSAGE);
             }
         });
         endAppointmentBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                SelectionService service = new SelectionService();
+                service.createSelection();
                 AppointmentService appointmentService=new AppointmentService();
                 appointmentService.endLatestAppointment();
+                JOptionPane
+                        .showMessageDialog(null, "已结束当前预约", "提示",
+                                JOptionPane.WARNING_MESSAGE);
+
+            }
+        });
+        管理员登陆Button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new Login();
             }
         });
     }

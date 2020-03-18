@@ -12,7 +12,7 @@ public class DBUtil {
 	static String database = "database";
 	static String encoding = "UTF-8";
 	static String loginName = "root";
-	static String password = "Userpassword";
+	static String password = "admin";
 
 	static {
 		try {
@@ -49,7 +49,4 @@ public class DBUtil {
 		}
 	}
 
-	public static void main(String[] args) throws SQLException {
-		System.out.println(getConnection());
-	}
 }

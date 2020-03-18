@@ -73,45 +73,7 @@ public class SelectionDaoImpl implements SelectionDao {
     }
 
 
-    /**
-     * @param
-     * @return 若中签表中存在这个人的记录则返回true 否则返回false
-     * 查询是否中签，若中签则返回购买凭证：姓名，电话，口罩数量用户id
-     * 刘昭玮
-     */
-    public ArrayList<Object> isExistSelection(int registerID) {
-        ArrayList<Object> resultData = new ArrayList<Object>();//最终数据
-        try {
-            conn = DBUtil.getConnection();
-            //先查中签表
-            SelectionDaoImpl selDao = new SelectionDaoImpl();
-            Selection sel = selDao.findByRegisterID(registerID);//获取Selection
-            if (sel==null) {//没用中签记录
-                return null;
-            } else {
-                int appointmentID = sel.getAppointmentID();//得到预约id
-                /////再查用户表
-                User user = getUserByAppointmentID(appointmentID);
-                //再查登记表，得到口罩数量
-                String findRespirator = "SELECT * FROM register WHERE id=?";
-                stmt = conn.prepareStatement(findRespirator);
-                stmt.setInt(1, registerID);//registerID
-                rs = stmt.executeQuery();//执行查
-                rs.next();
-                int respiratorNumber = rs.getInt("mask");
-                ///准备返回的数据，三个String 一个int
-                resultData.add(user.getName());
-                resultData.add(user.getId());
-                resultData.add(user.getPhone());
-                resultData.add(respiratorNumber);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }finally {
-            DBUtil.close(rs,stmt,conn);
-        }
-        return resultData;
-    }
+
 
     /**
      * @param appointmentID 某次预约表ID

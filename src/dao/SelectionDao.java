@@ -38,15 +38,6 @@ public interface SelectionDao {
 
 
 
-
-    /**
-     * @param id 预约编号
-     * @return 若中签表中存在这个人的记录则返回true 否则返回false
-     * 查询是否中签，若中签则
-     * 刘昭玮
-     */
-    public ArrayList<Object> isExistSelection(int id);
-
     /**
      * @param appointmentID 某次预约表ID
      * @return 中签名单
