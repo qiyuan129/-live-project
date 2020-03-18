@@ -1,161 +1,284 @@
 import java.awt.*;//导入awt包
 import javax.swing.*;//导入swing包
-import javax.swing.table.TableCellEditor;
-import java.awt.event.ActionListener;//导入awt包中的监听器事件包
-import java.awt.event.ActionEvent;//导入awt包中的ActionEvent事件包
-import java.lang.annotation.Target;
-public class MainPage extends JFrame {
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.table.DefaultTableModel;
 
+import dao.AppointmentDaoImpl;
+import dao.SelectionDaoImpl;
+import model.Selection;
+
+import java.awt.event.ActionListener;//导入awt包中的监听器事件包
+import java.util.ArrayList;
+import java.awt.event.ActionEvent;//导入awt包中的ActionEvent事件包
+
+public class MainPage extends JFrame{
+    private JPanel contentPane;
+    private JTable table;
+    private String head[]=null;
+    private Object [][]data=null;
+	private AppointmentDaoImpl appointmentDaoImpl=new AppointmentDaoImpl();
+	private SelectionDaoImpl selectionDaoImpl=new SelectionDaoImpl();
+	
     //返回预约开始时间
-    public String getBeginTime(JTextField begintime) {
-        String num = begintime.getText().toString();
-        return num;
+    public String getBeginTime(JTextField jt) {
+        JFrame jframe = new JFrame();
+        String begintime = jt.getText();
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//        Date utilDate = null;
+//		try {
+//			utilDate = sdf.parse(begintime);
+//		} catch (ParseException e) {
+//			// TODO 自动生成的 catch 块
+//			e.printStackTrace();
+//		}
+//        return utilDate;
+        return begintime;
     }
 
     //返回预约结束时间
-    public String getEndTime(JTextField endtime){
-        String num = endtime.getText().toString();
-        return num;
+    public String getEndTime(JTextField jt) {
+    	JFrame jframe = new JFrame();
+        String endtime = jt.getText();
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//        Date utilDate = null;
+//		try {
+//			utilDate = sdf.parse(endtime);
+//		} catch (ParseException e) {
+//			// TODO 自动生成的 catch 块
+//			e.printStackTrace();
+//		}
+//        return utilDate;
+        return endtime;
     }
-    //返回口罩数量
-    public int getMasknum(JTextField masknum)
-    {
-        int num=0;
-        String mnum = masknum.getText().toString();
-        try {
-
-            num = Integer.valueOf(mnum).intValue();
-
-        } catch (NumberFormatException e) {
-
-            e.printStackTrace();
-
-        }
-        return num;
+    
+    //返回口罩总数
+    public int getTotalMaskNum(JTextField jt) {
+        JFrame jframe = new JFrame();
+        String totalMask = jt.getText();
+        return Integer.parseInt(totalMask);
     }
 
-    //设置起始时间面板
-    public JPanel SetTimePanle()
-    {
-        Container mk=getContentPane();
-        JPanel Time = new JPanel();
-        setSize(450,450);//设计窗体的大小
-        JLabel a=new JLabel("起始时间");
-        JLabel b=new JLabel("结束时间:");
-        JTextField begintime= new JTextField();
-        JTextField endtime= new JTextField();
+    //返回单人可预约最大数量
+    public int getMaskNum(JTextField jt) {
+        JFrame jframe = new JFrame();
+        String maskmax = jt.getText();
+        return Integer.parseInt(maskmax);
+    }
+    
+  //返回某次预约的预约id
+    public int getappointmentID(JTextField jt) {
+        JFrame jframe = new JFrame();
+        String appointmentID = jt.getText();
+        return Integer.parseInt(appointmentID);
+    }
+    
+    //生成数据表格
+    public Object[][] selectionData(int appointmentID) {
+    	ArrayList<Selection> list=selectionDaoImpl.importSelectedList(appointmentID);
+    	data=new Object[list.size()][head.length];
+    	
+    	for (int i=0;i<list.size();i++) {
+    		for (int j=0;j<head.length;j++) {
+    			data[i][0]=list.get(i).getId();
+    			data[i][1]=list.get(i).getUserID();
+    			data[i][2]=list.get(i).getRegisterID();
+    			data[i][3]=list.get(i).getTime();
+    			data[i][4]=list.get(i).getAppointmentID();
+    		}
+    	}
+		return data;
+    }
+
+    //数据库数据填写
+    public JPanel setListPanel() {
+        JFrame jframe = new JFrame("中签表格");
+        JPanel jp = new JPanel();
+        jp.setLayout(null);
+        jframe.setContentPane(jp);
+        int width = 600;
+        int heigh = 400;
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize(); //得到屏幕的尺寸
+        int x = (int) screenSize.getWidth() / 2 - width / 2;
+        int y = (int) screenSize.getHeight() / 2 - heigh / 2;
+        jframe.setBounds(x, y, width, heigh);
+        jframe.setVisible(true);
+        
+        
+        table=new JTable();
+
+        table.setBorder(new LineBorder(new Color(0,0,0)));
+        
+        JLabel a = new JLabel("请输入预约id:");
+        JTextField appointmentID = new JTextField(15);
         JButton check = new JButton("确认");
         JButton cancle = new JButton("取消");
-        mk.add(Time);
-        Time.add(a);
-        Time.add(b);
-        Time.add(begintime);
-        Time.add(endtime);
-        Time.add(check);
-        Time.add(cancle);
-        Time.setLayout(null);
+        
+        jp.add(a);
+        jp.add(appointmentID);
+        jp.add(check);
+        jp.add(cancle);
+        
+        a.setBounds(100, 300, 80, 25);
+        appointmentID.setBounds(190, 300, 150, 25);
+        check.setBounds(350, 300, 80, 30);
+        cancle.setBounds(450, 300, 80, 30);
+        
+        jp.setBorder(new EmptyBorder(5,5,5,5));
+        jp.setBounds(500, 500, 700, 250);
+        
+        JScrollPane scrollPane=new JScrollPane();
+        scrollPane.setBounds(500,500,700,250);
+        
+        
+       
+        head=new String[] {"中签单编号","用户编号","登记表预约编号","时间","预约编号"};
+        
+        check.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+            	DefaultTableModel tableModel=new DefaultTableModel(selectionData(getappointmentID(appointmentID)),head) {
+                	public boolean isCellEditable(int row,int column) {
+        				return false;
+        			}
+                };
+                table.setModel(tableModel);
+                scrollPane.setViewportView(table);
+                GroupLayout gl_contentPane=new GroupLayout(jp);
+                gl_contentPane.setHorizontalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+                		.addComponent(scrollPane,GroupLayout.DEFAULT_SIZE,684,Short.MAX_VALUE));
+                gl_contentPane.setVerticalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+                		.addGroup(gl_contentPane.createSequentialGroup()
+                				.addComponent(scrollPane,GroupLayout.PREFERRED_SIZE,195,
+                						GroupLayout.PREFERRED_SIZE).addGap(66)));
+            	jp.setLayout(gl_contentPane);	
+            }
+            	
+        });
+        
+        cancle.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                // TODO Auto-generated method stub
+                jframe.setVisible(false);
+            }
+        });
 
-        a.setBounds(110,90,60,40);
-        begintime.setBounds(180,100,200,20);
-        b.setBounds(110,150,60,40);
-        endtime.setBounds(180,160,200,20);
-        check.setBounds(150,230,80,30);
-        cancle.setBounds(280,230,80,30);
-
-        setVisible(false);
-        return Time;
+        return jp;
     }
 
-    //设置口罩数量面板
-    public JPanel SetMasknumPanle()
-    {
-        JPanel Masknum = new JPanel();
-        setSize(450,450);//设计窗体的大小
-        JLabel a=new JLabel("修改口罩数量：");
-        JTextField masknum= new JTextField();
+    public JPanel setTimePanel() {
+        JFrame jframe = new JFrame("发布预约");
+        JPanel jp = new JPanel();
+        jp.setLayout(null);
+        jframe.setContentPane(jp);
+        int width = 420;
+        int heigh = 420;
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize(); //得到屏幕的尺寸
+        int x = (int) screenSize.getWidth() / 2 - width / 2;
+        int y = (int) screenSize.getHeight() / 2 - heigh / 2;
+        jframe.setBounds(x, y, width, heigh);
+        jframe.setVisible(true);
+        jp.setLayout(null);
+        JLabel a = new JLabel("起始时间:");
+        JLabel b = new JLabel("结束时间:");
+        JLabel c = new JLabel("口罩数量:");
+        JLabel d = new JLabel("单人预约数:");
+        JTextField begintime = new JTextField(15);
+        JTextField endtime = new JTextField(15);
+        JTextField totalnum = new JTextField(15);
+        JTextField maskmax = new JTextField(15);
         JButton check = new JButton("确认");
         JButton cancle = new JButton("取消");
-        Masknum.add(a);
-        Masknum.add(masknum);
-        Masknum.add(check);
-        Masknum.add(cancle);
-        Masknum.setLayout(null);
+        jp.add(a);
+        jp.add(begintime);
+        jp.add(b);
+        jp.add(endtime);
+        jp.add(c);
+        jp.add(totalnum);
+        jp.add(d);
+        jp.add(maskmax);
+        jp.add(check);
+        jp.add(cancle);
+        a.setBounds(80, 50, 80, 25);
+        begintime.setBounds(150, 50, 150, 25);
+        b.setBounds(80, 120, 80, 25);
+        endtime.setBounds(150, 120, 150, 25);
+        c.setBounds(80, 190, 80, 25);
+        totalnum.setBounds(150, 190, 150, 25);
+        d.setBounds(70, 260, 80, 25);
+        maskmax.setBounds(150, 260, 150, 25);
+        check.setBounds(100, 310, 80, 30);
+        cancle.setBounds(220, 310, 80, 30);
 
-        a.setBounds(90,90,100,40);
-        masknum.setBounds(180,100,200,20);
-        check.setBounds(130,200,80,30);
-        cancle.setBounds(250,200,80,30);
-
-        setVisible(false);
-        return Masknum;
+        check.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                // TODO Auto-generated method stub
+                appointmentDaoImpl.addAdminAppointment(getBeginTime(begintime),getEndTime(endtime),
+                		getTotalMaskNum(totalnum),getMaskNum(maskmax));
+                jframe.setVisible(false);
+            }
+        });
+        
+        cancle.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                // TODO Auto-generated method stub
+                jframe.setVisible(false);
+            }
+        });
+        
+        return jp;
     }
 
-    //设置导出表格面板
-    public JPanel SetExportPanle()
+
+    public JPanel setMainPanel()
     {
-        JPanel ExportPanle = new JPanel();
-        setSize(450,450);//设计窗体的大小
-        JLabel a=new JLabel("获取预约表格");
-        JTable Table = new JTable();
-        ExportPanle.add(a);
-        ExportPanle.add(Table);
+        JFrame jframe = new JFrame("管理员设置");
+        JPanel jp = new JPanel();
+        jp.setLayout(null);
+        jframe.setContentPane(jp);
+        int width = 400;
+        int heigh = 400;
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize(); //得到屏幕的尺寸
+        int x = (int) screenSize.getWidth() / 2 - width / 2;
+        int y = (int) screenSize.getHeight() / 2 - heigh / 2;
+        jframe.setBounds(x, y, width, heigh);
+        jframe.setVisible(true);
 
-        ExportPanle.setLayout(null);
-        a.setBounds(150,10,100,20);
+        JButton buttonTime = new JButton("发布预约");
+        JButton buttonTable = new JButton("查看中签表");
 
-        setVisible(false);
-        return ExportPanle;
+        jp.add(buttonTime);
+        jp.add(buttonTable);
+
+        buttonTime.setBounds(130, 60, 140, 40);
+        buttonTable.setBounds(130, 180, 140, 40);
+
+        buttonTime.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                // TODO Auto-generated method stub
+                setTimePanel();
+            }
+        });
+
+        buttonTable.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                // TODO Auto-generated method stub
+                setListPanel();
+            }
+
+        });
+        return jp;
     }
 
     public MainPage() {
-        JPanel TimePanle = SetTimePanle();
-        JPanel MaskPanle = SetMasknumPanle();
-        JPanel ListPanle = SetExportPanle();
-        JButton time = new JButton("修改预约时间");
-        JButton mask = new JButton("修改口罩数量");
-        JButton list = new JButton("查看预约表");
-        setVisible(true);//使窗体可视化
-        Container mk = getContentPane();//获取一个容器
-        mk.add(time);
-        mk.add(mask);
-        mk.add(list);
-
-        //面板
-        mk.add(TimePanle);
-        mk.add(MaskPanle);
-        mk.add(ListPanle);
-        setBounds(200, 200, 800, 600);//设置窗体的长宽各为300、300  让其显示在左上方的300、300处
-        mk.setLayout(null);
-        time.setBounds(650, 30, 120, 30);
-        mask.setBounds(650, 90, 120, 30);
-        list.setBounds(650, 150, 120, 30);
-
-        time.addActionListener(new ActionListener() {//对修改时间按钮添加监听事件
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                TimePanle.setVisible(true);
-                MaskPanle.setVisible(false);
-                ListPanle.setVisible(false);
-            }
-        });
-
-        mask.addActionListener(new ActionListener() {//对修改口罩数量加监听事件
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                TimePanle.setVisible(false);
-                MaskPanle.setVisible(true);
-                ListPanle.setVisible(false);
-            }
-        });
-
-        list.addActionListener(new ActionListener() {//对查看表格添加监听事件
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                TimePanle.setVisible(false);
-                MaskPanle.setVisible(false);
-                ListPanle.setVisible(true);
-            }
-        });
-
+        setMainPanel();
     }
+
 }

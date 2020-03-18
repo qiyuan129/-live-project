@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Date;
 
 import model.Admin;
 import util.DBUtil;
@@ -24,7 +25,7 @@ public class AdminDaoImpl implements AdminDao {
 		int i = 0;
 		Admin admin = new Admin();
 		try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement()) {
-			String sql = "select *  from admin where id='" + id + "' and password='" + password;
+			String sql = "select *  from admin where id='" + id + "' and password='" + password+" ' ";
 			ResultSet rs = s.executeQuery(sql);
 			while (rs.next()) {
 				String names = rs.getString(1);
@@ -34,6 +35,9 @@ public class AdminDaoImpl implements AdminDao {
 					i = 1;
 				}
 			}
+			c.close();
+			s.close();
+			rs.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
