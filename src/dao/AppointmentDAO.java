@@ -1,9 +1,10 @@
-package DAO;
+package Dao;
 
 import java.util.Date;
 import java.util.List;
 
 import model.Appointment;
+import model.Register;
 
 public interface AppointmentDao {
 	/**
@@ -44,4 +45,11 @@ public interface AppointmentDao {
      * @param time
      */
     void setEndTime(Date time);
+
+    /*
+     * 返回最新预约
+     */
+	Appointment getLatestAppointment();
+
+	
 }
