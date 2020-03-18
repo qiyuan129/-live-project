@@ -23,16 +23,16 @@ public interface AppointmentDao {
      * @param totalMask 口罩总数
      * @param maskMAX 单人可预约的最大数
      */
-    
+
     void addAdminAppointment(String beginString, String endString, int totalMask, int maskMAX);
-    
-    
+
+
     /**
      * 新建一次预约项目(口罩总数默认1000，单人默认最多3个)
      * @param begin
      * @param end
      */
-    
+
     void addAppointment(Date begin,Date end);
 
     /**
@@ -56,14 +56,8 @@ public interface AppointmentDao {
      * 修改一个预约的结束时间
      * @param time
      */
-    void setEndTime(Date time);
+    void setEndTime(int id,Date time);
+    void setMaskNumber(int id,int number);
 
-    /*
-     * 返回最新预约
-     */
-	Appointment getLatestAppointment();
-
-	
-
-	
+    Appointment getLatestAppointment();
 }
