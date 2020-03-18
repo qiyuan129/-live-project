@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 package Dao;
-=======
-package dao;
->>>>>>> 70f126be75391b80bae63d23c57ef7f95a4532cf
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,11 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 import model.Appointment;
-<<<<<<< HEAD
 import model.Register;
-=======
-import util.DBUtil;
->>>>>>> 70f126be75391b80bae63d23c57ef7f95a4532cf
 
 public class AppointmentDaoImpl implements AppointmentDao{
 
@@ -53,6 +45,27 @@ public class AppointmentDaoImpl implements AppointmentDao{
 			e.printStackTrace();
 		} finally {
 			DBUtil.close(rs, pstmt, conn);
+		}
+		
+	}
+	
+	@Override
+	public void addAdminAppointment(String beginString, String endString, int totalMask, int maskMAX) {
+		DBUtil dbu=new DBUtil();
+		Connection conn=null;
+		try {
+			conn = dbu.getConnection();
+			String sql="insert into appointment(start , end , mask , maskMAX) value(?,?,?,?)";
+			PreparedStatement pstmt=(PreparedStatement) conn.prepareStatement(sql);
+			pstmt.setObject(1, beginString);
+			pstmt.setObject(2, endString);
+			pstmt.setInt(3, totalMask);
+			pstmt.setInt(4,maskMAX);
+			pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 	}
@@ -199,7 +212,8 @@ public class AppointmentDaoImpl implements AppointmentDao{
 	@Override
 	public void setEndTime(Date time) {
 		// TODO Auto-generated method stub
-
+		
+		
 		
 		
 	}

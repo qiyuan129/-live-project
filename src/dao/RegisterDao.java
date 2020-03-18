@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 package Dao;
-=======
-package dao;
->>>>>>> 70f126be75391b80bae63d23c57ef7f95a4532cf
 
 import java.util.Date;
 import java.util.List;
