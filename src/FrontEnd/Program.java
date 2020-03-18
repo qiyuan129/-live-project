@@ -15,7 +15,7 @@ public class Program
     public static void main(String[] args)
     {
         //窗口宽度与高度
-        int width=500;
+        int width=700;
         int height=500;
 
         RegisterService registTestClass = new RegisterService();

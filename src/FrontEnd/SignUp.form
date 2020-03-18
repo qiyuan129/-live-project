@@ -3,7 +3,7 @@
   <grid id="27dc6" binding="userPanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="true" same-size-vertically="true" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
-      <xy x="20" y="20" width="594" height="428"/>
+      <xy x="20" y="4" width="697" height="444"/>
     </constraints>
     <properties/>
     <border type="none" title="用户界面"/>
@@ -129,14 +129,6 @@
             </constraints>
             <properties/>
           </component>
-          <component id="c3073" class="javax.swing.JButton" binding="查询Button" default-binding="true">
-            <constraints>
-              <grid row="5" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <text value="查询"/>
-            </properties>
-          </component>
           <hspacer id="2b12e">
             <constraints>
               <grid row="0" column="4" row-span="1" col-span="2" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
@@ -175,6 +167,30 @@
             </constraints>
             <properties>
               <text value="+86"/>
+            </properties>
+          </component>
+          <component id="c3073" class="javax.swing.JButton" binding="查询Button" default-binding="true">
+            <constraints>
+              <grid row="3" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="查询"/>
+            </properties>
+          </component>
+          <component id="624fa" class="javax.swing.JButton" binding="addAppointmentBtn">
+            <constraints>
+              <grid row="4" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="新建预约"/>
+            </properties>
+          </component>
+          <component id="51354" class="javax.swing.JButton" binding="endAppointmentBtn">
+            <constraints>
+              <grid row="4" column="7" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="结束预约"/>
             </properties>
           </component>
         </children>

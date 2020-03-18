@@ -1,7 +1,10 @@
 package FrontEnd;
 
+import dao.AppointmentDao;
+import dao.AppointmentDaoImpl;
 import dao.SelectionDao;
 import dao.SelectionDaoImpl;
+import service.AppointmentService;
 import service.RegisterService;
 
 import java.awt.event.ActionEvent;
@@ -27,6 +30,8 @@ public class SignUp extends JFrame
 
     JPanel userPanel;
     private JComboBox numberComboBox1;
+    private JButton addAppointmentBtn;
+    private JButton endAppointmentBtn;
 
 
     public SignUp(RegisterService registTestClass, SelectionDaoImpl queryTestClass)
@@ -124,6 +129,20 @@ public class SignUp extends JFrame
                     }
 
                 }
+            }
+        });
+        addAppointmentBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AppointmentDao appointmentDao=new AppointmentDaoImpl();
+                appointmentDao.addAppointment();
+            }
+        });
+        endAppointmentBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AppointmentService appointmentService=new AppointmentService();
+                appointmentService.endLatestAppointment();
             }
         });
     }

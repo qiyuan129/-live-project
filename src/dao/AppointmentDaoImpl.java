@@ -234,10 +234,10 @@ public class AppointmentDaoImpl implements AppointmentDao{
 
 		try {
 			conn=DBUtil.getConnection();
-			ps= (PreparedStatement) conn.createStatement();
+			Statement stmt=conn.createStatement();
 
 			String sql="SELECT * FROM appointment ORDER BY start DESC";
-			rs=ps.executeQuery(sql);
+			rs=stmt.executeQuery(sql);
 
 			if(rs.next()){
 				Date startStamp = rs.getTimestamp(2);
@@ -249,9 +249,6 @@ public class AppointmentDaoImpl implements AppointmentDao{
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}
-		finally {
-			DBUtil.close(rs,ps,conn);
 		}
 		return appointment;
 	}
