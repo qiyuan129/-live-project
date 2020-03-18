@@ -18,14 +18,16 @@ import java.util.List;
  * @Version 1.0
  */
 public class SelectionDaoImpl implements SelectionDao {
+    private Connection conn = null;
+    private PreparedStatement stmt = null;
+    private ResultSet rs = null;
+    private DBUtil dbu=new DBUtil();
     /**
      * @param obj 要插入的中签记录对象
      * @return 若插入成功则true 否则false
      */
     @Override
     public void add(Selection obj) {
-        Connection conn = null;
-        PreparedStatement stmt=null;
         try {
             conn = DBUtil.getConnection();
             //id为自增，所以不用指定
@@ -51,8 +53,6 @@ public class SelectionDaoImpl implements SelectionDao {
      */
     @Override
     public void addSelections(ArrayList<Selection> array){
-        Connection conn = null;
-        PreparedStatement stmt=null;
         try {
             conn = DBUtil.getConnection();
             for(Selection obj:array){
@@ -81,9 +81,6 @@ public class SelectionDaoImpl implements SelectionDao {
      */
     public ArrayList<Object> isExistSelection(int registerID) {
         ArrayList<Object> resultData = new ArrayList<Object>();//最终数据
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
         try {
             conn = DBUtil.getConnection();
             //先查中签表
@@ -123,9 +120,6 @@ public class SelectionDaoImpl implements SelectionDao {
      */
     public ArrayList<Selection> importSelectedList(int appointmentID) {
         ArrayList<Selection> list = new ArrayList<Selection>();
-        ResultSet rs=null;
-        Connection conn = null;
-        PreparedStatement stmt = null;
         try {
             conn = DBUtil.getConnection();
             String sql = "SELECT * FROM selection WHERE appointmentID=?";
@@ -207,9 +201,6 @@ public class SelectionDaoImpl implements SelectionDao {
     @Override
     public Selection findByRegisterID(int registerID){
         Selection item=null;
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
         try {
             conn = DBUtil.getConnection();
             //先查中签表
@@ -242,9 +233,6 @@ public class SelectionDaoImpl implements SelectionDao {
     @Override
     public User getUserByAppointmentID(int appointmentID){
         User user=null;
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
         try {
             conn = DBUtil.getConnection();
             String sql = "SELECT * FROM user WHERE appointmentID=?";
@@ -271,8 +259,6 @@ public class SelectionDaoImpl implements SelectionDao {
     @Override
     public void updateUserLastSelectionID( ArrayList<Selection> array){
         User user=null;
-        Connection conn = null;
-        PreparedStatement stmt = null;
         try {
             conn = DBUtil.getConnection();
             for(Selection item:array){
