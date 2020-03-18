@@ -18,102 +18,100 @@ import java.util.List;
  * @Version 1.0
  */
 public class SelectionDaoImpl implements SelectionDao {
-
     /**
      * @param obj 要插入的中签记录对象
      * @return 若插入成功则true 否则false
      */
     @Override
     public void add(Selection obj) {
+        Connection conn = null;
+        PreparedStatement stmt=null;
         try {
-            Connection conn = null;
             conn = DBUtil.getConnection();
-            String sql = "INSERT  INTO selection (id,userID,registerID,Date,appointmentID)" +
-                    " VALUES (?,?,?,?,?)";
-            PreparedStatement stmt = conn.prepareStatement(sql);
-            ;
-            stmt.setInt(1, obj.getId());
-            stmt.setInt(2, obj.getUserID());
-            stmt.setInt(3, obj.getRegisterID());
-            stmt.setObject(4, obj.getTime());
-            stmt.setInt(5, obj.getAppointmentID());
-
+            //id为自增，所以不用指定
+            String sql = "INSERT  INTO selection (userID,registerID,time,appointmentID)" + " VALUES (?,?,?,?)";
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, obj.getUserID());
+            stmt.setInt(2, obj.getRegisterID());
+            stmt.setObject(3, obj.getTime());
+            stmt.setInt(4, obj.getAppointmentID());
             stmt.executeUpdate();
-            stmt.close();
-            conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            DBUtil.close(null,stmt,conn);
         }
 
     }
 
+
     /**
-     * @param id 预约编号
-     * @return 若中签表中存在这个人的记录则返回true 否则返回false
-     * 查询是否中签，若中签则
-     * 刘昭玮
+     * @param array  Selection数组
+     *
      */
-    public ArrayList<Object> isExistSelection(int id) {
-        ArrayList<Object> resultData = new ArrayList<Object>();//最终数据
-        ArrayList<Selection> list = new ArrayList<Selection>();
-        ;
+    @Override
+    public void addSelections(ArrayList<Selection> array){
+        Connection conn = null;
+        PreparedStatement stmt=null;
         try {
-            Connection conn = null;
             conn = DBUtil.getConnection();
-            //先查中签表
-            String sql = "SELECT FROM selection WHERE registerID=?";
-            PreparedStatement stmt = conn.prepareStatement(sql);
-            ;
-            stmt.setInt(1, id);
-            ResultSet rs = stmt.executeQuery();//执行查
-            ResultSetMetaData md = rs.getMetaData();//获取键名
-            while (rs.next()) {
-                Selection tmp = new Selection();
-                tmp.setId(rs.getInt("id"));
-                tmp.setUserID(rs.getInt("userID"));
-                tmp.setRegisterID(rs.getInt("registerID"));
-                tmp.setTime(rs.getDate("time"));
-                tmp.setAppointmentID(rs.getInt("appointmentID"));
-                list.add(tmp);
+            for(Selection obj:array){
+                String sql = "INSERT  INTO selection (userID,registerID,time,appointmentID)" +
+                        " VALUES (?,?,?,?)";
+                stmt = conn.prepareStatement(sql);
+                stmt.setInt(1, obj.getUserID());
+                stmt.setInt(2, obj.getRegisterID());
+                stmt.setObject(3, obj.getTime());
+                stmt.setInt(4, obj.getAppointmentID());
+                stmt.executeUpdate();
             }
-
-            if (list.size() == 0) {//没用中签记录
-                return null;
-            } else {
-                ArrayList<Object> data = new ArrayList<Object>();
-                int appointmentID = list.get(0).getAppointmentID();//得到预约id  确定只有一条吗?????
-                /////再查用户表
-                String SQL = "SELECT FROM user WHERE appointmentID=?";
-                stmt.setInt(1, appointmentID);
-                ResultSet resullt = stmt.executeQuery();//执行查
-                User tmpUser = new User();
-                while (resullt.next()) {
-                    tmpUser.setId(resullt.getInt("id"));
-                    tmpUser.setName(resullt.getString("name"));
-                    tmpUser.setIdentity(resullt.getString("identity"));
-                    tmpUser.setPhone(resullt.getString("phone"));
-                    tmpUser.setAppointmentID(resullt.getInt("appointmentID"));
-                }
-
-                //再查登记表，得到口罩数量
-                String findRespirator = "SELECT FROM register WHERE id=?";
-                stmt.setInt(1, id);//registerID
-                ResultSet respiratorResult = stmt.executeQuery();//执行查
-                respiratorResult.next();
-                int respiratorNumber = respiratorResult.getInt("mask");
-
-                ///准备返回的数据，三个String 一个int
-                resultData.add(tmpUser.getName());
-                resultData.add(tmpUser.getId());
-                resultData.add(tmpUser.getPhone());
-                resultData.add(respiratorNumber);
-            }
-
-            stmt.close();
-            conn.close();
-
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            DBUtil.close(null,stmt,conn);
+        }
+    }
+
+
+    /**
+     * @param
+     * @return 若中签表中存在这个人的记录则返回true 否则返回false
+     * 查询是否中签，若中签则返回购买凭证：姓名，电话，口罩数量用户id
+     * 刘昭玮
+     */
+    public ArrayList<Object> isExistSelection(int registerID) {
+        ArrayList<Object> resultData = new ArrayList<Object>();//最终数据
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            conn = DBUtil.getConnection();
+            //先查中签表
+            SelectionDaoImpl selDao = new SelectionDaoImpl();
+            Selection sel = selDao.findByRegisterID(registerID);//获取Selection
+            if (sel==null) {//没用中签记录
+                return null;
+            } else {
+                int appointmentID = sel.getAppointmentID();//得到预约id
+                /////再查用户表
+                User user = getUserByAppointmentID(appointmentID);
+                //再查登记表，得到口罩数量
+                String findRespirator = "SELECT * FROM register WHERE id=?";
+                stmt = conn.prepareStatement(findRespirator);
+                stmt.setInt(1, registerID);//registerID
+                rs = stmt.executeQuery();//执行查
+                rs.next();
+                int respiratorNumber = rs.getInt("mask");
+                ///准备返回的数据，三个String 一个int
+                resultData.add(user.getName());
+                resultData.add(user.getId());
+                resultData.add(user.getPhone());
+                resultData.add(respiratorNumber);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            DBUtil.close(rs,stmt,conn);
         }
         return resultData;
     }
@@ -125,15 +123,16 @@ public class SelectionDaoImpl implements SelectionDao {
      */
     public ArrayList<Selection> importSelectedList(int appointmentID) {
         ArrayList<Selection> list = new ArrayList<Selection>();
-
+        ResultSet rs=null;
+        Connection conn = null;
+        PreparedStatement stmt = null;
         try {
-            Connection conn = null;
             conn = DBUtil.getConnection();
-            String sql = "SELECT FROM selection WHERE appointmentID=?";
-            PreparedStatement stmt = conn.prepareStatement(sql);
-            ;
+            String sql = "SELECT * FROM selection WHERE appointmentID=?";
+            /* String sql="SELECT * from register WHERE userID=?";*/
+            stmt= conn.prepareStatement(sql);
             stmt.setInt(1, appointmentID);
-            ResultSet rs = stmt.executeQuery();//执行查询
+            rs = stmt.executeQuery();//执行查询
             ResultSetMetaData md = rs.getMetaData();//获取键名
             int columnCount = md.getColumnCount();//获取行的数量
             while (rs.next()) {
@@ -145,12 +144,10 @@ public class SelectionDaoImpl implements SelectionDao {
                 tmp.setAppointmentID(rs.getInt("appointmentID"));
                 list.add(tmp);
             }
-
-
-            stmt.close();
-            conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            DBUtil.close(rs,stmt,conn);
         }
 
         if (list.size() == 0) {
@@ -166,18 +163,9 @@ public class SelectionDaoImpl implements SelectionDao {
      */
     @Override
     public List<Selection> findTotal(String indetityNumber) {
-
         return null;
     }
 
-    /**
-     * @param indetityNumber 身份证号码
-     * @return 若中签表中存在这个人的记录则返回true 否则返回false
-     */
-    @Override
-    public boolean isExist(String indetityNumber) {
-        return true;
-    }
 
     /**
      * 根据id属性查找。
@@ -209,6 +197,141 @@ public class SelectionDaoImpl implements SelectionDao {
             e.printStackTrace();
         }
         return selection;
+    }
+
+
+    /**
+     * @param registerID 预约ID
+     * @return 返回Selection
+     */
+    @Override
+    public Selection findByRegisterID(int registerID){
+        Selection item=null;
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            conn = DBUtil.getConnection();
+            //先查中签表
+            String sql = "SELECT * FROM  selection WHERE registerID=?";
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, registerID);
+            rs = stmt.executeQuery();//执行查
+            ResultSetMetaData md = rs.getMetaData();//获取键名
+            rs.next();
+            Selection tmp = new Selection();
+            tmp.setId(rs.getInt("id"));
+            tmp.setUserID(rs.getInt("userID"));
+            tmp.setRegisterID(rs.getInt("registerID"));
+            tmp.setTime(rs.getDate("time"));
+            tmp.setAppointmentID(rs.getInt("appointmentID"));
+            item=tmp;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            DBUtil.close(rs,stmt,conn);
+        }
+        return item;
+    }
+
+
+    /**
+     * @param appointmentID 预约ID
+     * @return
+     */
+    @Override
+    public User getUserByAppointmentID(int appointmentID){
+        User user=null;
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            conn = DBUtil.getConnection();
+            String sql = "SELECT * FROM user WHERE appointmentID=?";
+            stmt= conn.prepareStatement(sql);
+            stmt.setInt(1, appointmentID);
+            rs = stmt.executeQuery();//执行查
+            User tmpUser = new User();
+            rs.next();
+            tmpUser.setId(rs.getInt("id"));
+            tmpUser.setName(rs.getString("name"));
+            tmpUser.setIdentity(rs.getString("identity"));
+            tmpUser.setPhone(rs.getString("phone"));
+            tmpUser.setAppointmentID(rs.getInt("appointmentID"));
+            user=tmpUser;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            DBUtil.close(rs,stmt,conn);
+        }
+        return user;
+    }
+
+
+    @Override
+    public void updateUserLastSelectionID( ArrayList<Selection> array){
+        User user=null;
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        try {
+            conn = DBUtil.getConnection();
+            for(Selection item:array){
+                //UPDATE 表名称 SET 列名称 = 新值 WHERE 列名称 = 某值
+                String sql = "UPDATE user SET lastSelectionID=? WHERE id=?";
+                stmt= conn.prepareStatement(sql);
+                stmt.setInt(1, item.getId());
+                stmt.setInt(2, item.getUserID());
+                stmt.executeUpdate();//执行查
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            DBUtil.close(null,stmt,conn);
+        }
+
+    }
+
+
+
+    public static void main(String args[]){
+        int id=12;
+        SelectionDaoImpl dao = new SelectionDaoImpl();
+        /*Selection sel=new Selection();
+        Selection sel2=new Selection();
+
+        sel2.setUserID(25);
+        sel2.setRegisterID(544);
+        sel2.setTime(new Date(25634));
+        sel2.setAppointmentID(21);
+
+        sel.setAppointmentID(91);
+        sel.setTime(new Date(1544555));
+        sel.setRegisterID(153);
+        sel.setUserID(25);
+        ArrayList<Selection> array=new  ArrayList<Selection>();
+        array.add(sel);
+        array.add(sel2);*/
+
+        /*  ArrayList<Object> rear =dao.isExistSelection(5);*/
+        /* ArrayList<Object> qray =dao.isExistSelection(5);*/
+     /*  for(Object o:rear){
+           System.out.println(o);
+       }*/
+       /* for(Object ao:qray){
+            System.out.println(ao);
+        }*/
+
+        ArrayList<Selection> tmpay= dao.importSelectedList(11);
+
+        dao.updateUserLastSelectionID(tmpay);
+
+      /*  System.out.println(tmpay.size());
+         for(int i=0;i<tmpay.size();i++){
+             System.out.println(tmpay.get(i).getUserID());
+         }*/
+        System.out.println("哈哈，成功了");
     }
 
 

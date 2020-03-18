@@ -25,10 +25,6 @@ public class Register {
     	this.time = t;
 	}
 
-	public Register(){
-
-    }
-
 	public int getId() {
         return id;
     }

@@ -31,4 +31,9 @@ public interface RegisterDao {
      */
     void deleteByID(int id);
 
+    /*
+	 * 根据预约id返回登记结果集
+	 */
+	List<Register> getByAppointmentID(int id);
+
 }
