@@ -1,5 +1,8 @@
 package service;
 
+import util.IDValidator;
+import util.phoneNumValidator;
+
 /**
  * @ClassName UserService
  * @Description TODO
@@ -8,4 +11,17 @@ package service;
  * @Version 1.0
  */
 public class UserService {
+    public static boolean isIDValidator(String identity){
+        if(IDValidator.Validate(identity)){
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean isTruePhone(String phone){
+        if (phoneNumValidator.Validate(phone)){
+            return false;
+        }
+        return true;
+    }
 }
