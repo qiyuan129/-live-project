@@ -1,0 +1,313 @@
+package dao;
+
+import model.Register;
+import model.Selection;
+import model.User;
+import util.DBUtil;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+/**
+ * @ClassName SelectionDaoImpl
+ * @Description TODO
+ * @Author mingll
+ * @Date 2020/3/15 2:52 下午
+ * @Version 1.0
+ */
+public class SelectionDaoImpl implements SelectionDao {
+    /**
+     * @param obj 要插入的中签记录对象
+     * @return 若插入成功则true 否则false
+     */
+    @Override
+    public void add(Selection obj) {
+        Connection conn = null;
+        PreparedStatement stmt=null;
+        try {
+            conn = DBUtil.getConnection();
+            //id为自增，所以不用指定
+            String sql = "INSERT  INTO selection (userID,registerID,time,appointmentID)" + " VALUES (?,?,?,?)";
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, obj.getUserID());
+            stmt.setInt(2, obj.getRegisterID());
+            stmt.setObject(3, obj.getTime());
+            stmt.setInt(4, obj.getAppointmentID());
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DBUtil.close(null,stmt,conn);
+        }
+
+    }
+
+
+    /**
+     * @param array  Selection数组
+     *
+     */
+    @Override
+    public void addSelections(ArrayList<Selection> array){
+        Connection conn = null;
+        PreparedStatement stmt=null;
+        try {
+            conn = DBUtil.getConnection();
+            for(Selection obj:array){
+                String sql = "INSERT  INTO selection (userID,registerID,time,appointmentID)" +
+                        " VALUES (?,?,?,?)";
+                stmt = conn.prepareStatement(sql);
+                stmt.setInt(1, obj.getUserID());
+                stmt.setInt(2, obj.getRegisterID());
+                stmt.setObject(3, obj.getTime());
+                stmt.setInt(4, obj.getAppointmentID());
+                stmt.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            DBUtil.close(null,stmt,conn);
+        }
+    }
+
+
+    /**
+     * @param
+     * @return 若中签表中存在这个人的记录则返回true 否则返回false
+     * 查询是否中签，若中签则返回购买凭证：姓名，电话，口罩数量用户id
+     * 刘昭玮
+     */
+    public ArrayList<Object> isExistSelection(int registerID) {
+        ArrayList<Object> resultData = new ArrayList<Object>();//最终数据
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            conn = DBUtil.getConnection();
+            //先查中签表
+            SelectionDaoImpl selDao = new SelectionDaoImpl();
+            Selection sel = selDao.findByRegisterID(registerID);//获取Selection
+            if (sel==null) {//没用中签记录
+                return null;
+            } else {
+                int appointmentID = sel.getAppointmentID();//得到预约id
+                /////再查用户表
+                User user = getUserByAppointmentID(appointmentID);
+                //再查登记表，得到口罩数量
+                String findRespirator = "SELECT * FROM register WHERE id=?";
+                stmt = conn.prepareStatement(findRespirator);
+                stmt.setInt(1, registerID);//registerID
+                rs = stmt.executeQuery();//执行查
+                rs.next();
+                int respiratorNumber = rs.getInt("mask");
+                ///准备返回的数据，三个String 一个int
+                resultData.add(user.getName());
+                resultData.add(user.getId());
+                resultData.add(user.getPhone());
+                resultData.add(respiratorNumber);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            DBUtil.close(rs,stmt,conn);
+        }
+        return resultData;
+    }
+
+    /**
+     * @param appointmentID 某次预约表ID
+     * @return 中签名单
+     * 张玉婷
+     */
+    public ArrayList<Selection> importSelectedList(int appointmentID) {
+        ArrayList<Selection> list = new ArrayList<Selection>();
+        ResultSet rs=null;
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        try {
+            conn = DBUtil.getConnection();
+            String sql = "SELECT * FROM selection WHERE appointmentID=?";
+            /* String sql="SELECT * from register WHERE userID=?";*/
+            stmt= conn.prepareStatement(sql);
+            stmt.setInt(1, appointmentID);
+            rs = stmt.executeQuery();//执行查询
+            ResultSetMetaData md = rs.getMetaData();//获取键名
+            int columnCount = md.getColumnCount();//获取行的数量
+            while (rs.next()) {
+                Selection tmp = new Selection();
+                tmp.setId(rs.getInt("id"));
+                tmp.setUserID(rs.getInt("userID"));
+                tmp.setRegisterID(rs.getInt("registerID"));
+                tmp.setTime(rs.getDate("time"));
+                tmp.setAppointmentID(rs.getInt("appointmentID"));
+                list.add(tmp);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            DBUtil.close(rs,stmt,conn);
+        }
+
+        if (list.size() == 0) {
+            return null;
+        } else {
+            return list;
+        }
+    }
+
+    /**
+     * @param indetityNumber 身份证号码
+     * @return 返回表中这个身份证所有的记录
+     */
+    @Override
+    public List<Selection> findTotal(String indetityNumber) {
+        return null;
+    }
+
+
+    /**
+     * 根据id属性查找。
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public Selection selectByID(int id) {
+        Selection selection = null;
+        try {
+            Connection conn = DBUtil.getConnection();
+            String sql = "SELECT * from register WHERE userID=?";
+            PreparedStatement pstmt = (PreparedStatement) conn.prepareStatement(sql);
+            pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                selection = new Selection();
+                Timestamp time = rs.getTimestamp(5);
+                selection.setId(rs.getInt(1));
+                selection.setUserID(rs.getInt(2));
+                selection.setRegisterID(rs.getInt(3));
+                selection.setTime(rs.getTime(4));
+                selection.setAppointmentID(5);
+            }
+
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return selection;
+    }
+
+
+    /**
+     * @param registerID 预约ID
+     * @return 返回Selection
+     */
+    @Override
+    public Selection findByRegisterID(int registerID){
+        Selection item=null;
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            conn = DBUtil.getConnection();
+            //先查中签表
+            String sql = "SELECT * FROM  selection WHERE registerID=?";
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, registerID);
+            rs = stmt.executeQuery();//执行查
+            ResultSetMetaData md = rs.getMetaData();//获取键名
+            rs.next();
+            Selection tmp = new Selection();
+            tmp.setId(rs.getInt("id"));
+            tmp.setUserID(rs.getInt("userID"));
+            tmp.setRegisterID(rs.getInt("registerID"));
+            tmp.setTime(rs.getDate("time"));
+            tmp.setAppointmentID(rs.getInt("appointmentID"));
+            item=tmp;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            DBUtil.close(rs,stmt,conn);
+        }
+        return item;
+    }
+
+
+    /**
+     * @param appointmentID 预约ID
+     * @return
+     */
+    @Override
+    public User getUserByAppointmentID(int appointmentID){
+        User user=null;
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            conn = DBUtil.getConnection();
+            String sql = "SELECT * FROM user WHERE appointmentID=?";
+            stmt= conn.prepareStatement(sql);
+            stmt.setInt(1, appointmentID);
+            rs = stmt.executeQuery();//执行查
+            User tmpUser = new User();
+            rs.next();
+            tmpUser.setId(rs.getInt("id"));
+            tmpUser.setName(rs.getString("name"));
+            tmpUser.setIdentity(rs.getString("identity"));
+            tmpUser.setPhone(rs.getString("phone"));
+            tmpUser.setAppointmentID(rs.getInt("appointmentID"));
+            user=tmpUser;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            DBUtil.close(rs,stmt,conn);
+        }
+        return user;
+    }
+
+
+
+
+
+    public static void main(String args[]){
+        int id=12;
+        SelectionDaoImpl dao = new SelectionDaoImpl();
+        /*Selection sel=new Selection();
+        Selection sel2=new Selection();
+
+        sel2.setUserID(25);
+        sel2.setRegisterID(544);
+        sel2.setTime(new Date(25634));
+        sel2.setAppointmentID(21);
+
+        sel.setAppointmentID(91);
+        sel.setTime(new Date(1544555));
+        sel.setRegisterID(153);
+        sel.setUserID(25);
+        ArrayList<Selection> array=new  ArrayList<Selection>();
+        array.add(sel);
+        array.add(sel2);*/
+
+
+        /*  ArrayList<Object> rear =dao.isExistSelection(5);*/
+        /* ArrayList<Object> qray =dao.isExistSelection(5);*/
+     /*  for(Object o:rear){
+           System.out.println(o);
+       }*/
+       /* for(Object ao:qray){
+            System.out.println(ao);
+        }*/
+
+        ArrayList<Selection> tmpay= dao.importSelectedList(11);
+
+        System.out.println(tmpay.size());
+        for(int i=0;i<tmpay.size();i++){
+            System.out.println(tmpay.get(i).getUserID());
+        }
+        System.out.println("哈哈，成功了");
+    }
+
+
+}
