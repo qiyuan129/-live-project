@@ -48,6 +48,11 @@ public class SelectionService  {
 
         }
         selectDao.addSelections(selected);//写入数据库
+        //修改每个中签user的lastSelectionID
+        //先获取这次插入的所有记录
+        ArrayList<Selection> SelectedList=selectDao.importSelectedList(lastAppointment.getId());
+        //然后修改所有中签的user的lastSelectionID
+        selectDao.updateUserLastSelectionID(SelectedList);
     }
 
 }
