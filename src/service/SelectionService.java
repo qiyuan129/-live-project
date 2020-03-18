@@ -23,10 +23,10 @@ public class SelectionService  {
     public void createSelection(){
         AppointmentDaoImpl appointDao = new AppointmentDaoImpl();//获取一个AppointmentDaoImpl对象
         //得到最新预约对象，里面包含预约时间段等数据
-        Appointment lastAppointment =  appointDao.getLatestAppointment();//getLastAppointment
+        Appointment lastAppointment =  appointDao.getLastAppointment();
         RegisterDaoImpl registerDao = new RegisterDaoImpl();
         //获取候选者列表 条件 register.预约表id= lastAppointment.id
-        ArrayList<Register> candidate= ( ArrayList<Register>)registerDao.getByAppointmentID(lastAppointment.getId());
+        ArrayList<Register> candidate= registerDao.getByAppointmentID(lastAppointment.getId());
         SelectionDaoImpl selectDao = new SelectionDaoImpl();
         //总的口罩数量
         int totalRespirator = lastAppointment.getMask();
@@ -48,11 +48,6 @@ public class SelectionService  {
 
         }
         selectDao.addSelections(selected);//写入数据库
-        //修改每个中签user的lastSelectionID
-        //先获取这次插入的所有记录
-        ArrayList<Selection> SelectedList=selectDao.importSelectedList(lastAppointment.getId());
-        //然后修改所有中签的user的lastSelectionID
-        selectDao.updateUserLastSelectionID(SelectedList);
     }
 
 }

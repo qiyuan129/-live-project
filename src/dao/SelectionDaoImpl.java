@@ -268,30 +268,6 @@ public class SelectionDaoImpl implements SelectionDao {
     }
 
 
-    @Override
-    public void updateUserLastSelectionID( ArrayList<Selection> array){
-        User user=null;
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        try {
-            conn = DBUtil.getConnection();
-            for(Selection item:array){
-                //UPDATE 表名称 SET 列名称 = 新值 WHERE 列名称 = 某值
-                String sql = "UPDATE user SET lastSelectionID=? WHERE id=?";
-                stmt= conn.prepareStatement(sql);
-                stmt.setInt(1, item.getId());
-                stmt.setInt(2, item.getUserID());
-                stmt.executeUpdate();//执行查
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        finally {
-            DBUtil.close(null,stmt,conn);
-        }
-
-    }
 
 
 
@@ -314,6 +290,7 @@ public class SelectionDaoImpl implements SelectionDao {
         array.add(sel);
         array.add(sel2);*/
 
+
         /*  ArrayList<Object> rear =dao.isExistSelection(5);*/
         /* ArrayList<Object> qray =dao.isExistSelection(5);*/
      /*  for(Object o:rear){
@@ -325,12 +302,10 @@ public class SelectionDaoImpl implements SelectionDao {
 
         ArrayList<Selection> tmpay= dao.importSelectedList(11);
 
-        dao.updateUserLastSelectionID(tmpay);
-
-      /*  System.out.println(tmpay.size());
-         for(int i=0;i<tmpay.size();i++){
-             System.out.println(tmpay.get(i).getUserID());
-         }*/
+        System.out.println(tmpay.size());
+        for(int i=0;i<tmpay.size();i++){
+            System.out.println(tmpay.get(i).getUserID());
+        }
         System.out.println("哈哈，成功了");
     }
 

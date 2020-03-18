@@ -75,7 +75,6 @@ public interface SelectionDao {
     public User getUserByAppointmentID(int appointmentID);
 
 
-    public void updateUserLastSelectionID( ArrayList<Selection> array);
 
 
 }

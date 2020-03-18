@@ -1,10 +1,13 @@
+<<<<<<< HEAD
+package Dao;
+=======
 package dao;
+>>>>>>> 70f126be75391b80bae63d23c57ef7f95a4532cf
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -12,7 +15,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import model.Appointment;
 import model.Register;
 import util.DBUtil;
 
