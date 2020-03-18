@@ -46,6 +46,29 @@ public class AppointmentDaoImpl implements AppointmentDao{
 	}
 
 	@Override
+	public void addAdminAppointment(String beginString, String endString, int totalMask, int maskMAX) {
+		try {
+			conn =DBUtil.getConnection();
+			String sql="insert into appointment(start , end , mask , maskMAX) value(?,?,?,?)";
+			ps=(PreparedStatement) conn.prepareStatement(sql);
+			ps.setObject(1, beginString);
+			ps.setObject(2, endString);
+			ps.setInt(3, totalMask);
+			ps.setInt(4,maskMAX);
+			ps.executeUpdate();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally {
+			DBUtil.close(rs,ps,conn);
+		}
+
+	}
+
+
+	@Override
 	public void addAppointment(Date begin, Date end) {
 		try {
 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
