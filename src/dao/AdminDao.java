@@ -1,5 +1,7 @@
 package dao;
 
+import java.util.Date;
+
 import model.Admin;
 
 /**
@@ -11,5 +13,5 @@ import model.Admin;
  */
 public interface AdminDao {
 	//管理员登陆
-	void adminLogin(String id, String password);
+	//Admin adminLogin(String id, String password);
 }

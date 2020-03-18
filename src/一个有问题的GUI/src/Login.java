@@ -18,6 +18,19 @@ public class Login extends JFrame {
     private static Admin admin;
 
     public Login() {
+    	JFrame jframe = new JFrame();
+        JPanel jp = new JPanel();
+        jp.setLayout(null);
+        jframe.setContentPane(jp);
+        int width = 600;
+        int heigh = 400;
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize(); //得到屏幕的尺寸
+        int x = (int) screenSize.getWidth() / 2 - width / 2;
+        int y = (int) screenSize.getHeight() / 2 - heigh / 2;
+        jframe.setBounds(x, y,width, heigh);
+        jframe.setVisible(true);
+        jp.setLayout(null);
+    	
         JLabel a=new JLabel("管理员登录");
         JLabel b=new JLabel("用户名:");
         JLabel c=new JLabel("密    码:");
@@ -26,18 +39,17 @@ public class Login extends JFrame {
         password.setEchoChar('*');
         check=new JButton("确定");
         cancel=new JButton("重置");
-        setVisible(true);
-        Container mk=getContentPane();
+//        setVisible(true);
+//        Container mk=getContentPane();
 
-        mk.add(a);
-        mk.add(b);
-        mk.add(c);
-        mk.add(id);
-        mk.add(password);
-        mk.add(check);
-        mk.add(cancel);
-        setBounds(200,200,600,400);//设置窗体的长宽各为300、300  让其显示在左上方的300、300处
-        mk.setLayout(null);
+        jp.add(a);
+        jp.add(b);
+        jp.add(c);
+        jp.add(id);
+        jp.add(password);
+        jp.add(check);
+        jp.add(cancel);
+        jp.setLayout(null);
 
         a.setBounds(250,40,200,30);
         b.setBounds(150,90,60,40);
@@ -56,7 +68,6 @@ public class Login extends JFrame {
                 id.setText("");//对用户名文本框进行重置
                 password.setText("");//对密码文本框进行重置
             }
-
         });
 
 
@@ -68,7 +79,7 @@ public class Login extends JFrame {
                 if(admin.getId() != null){
                     JOptionPane.showMessageDialog(null, "登录成功");
                     new MainPage();
-
+                    jframe.setVisible(false);
                 }else {
                     JOptionPane.showMessageDialog(null, "登录失败");
                 }
@@ -80,7 +91,6 @@ public class Login extends JFrame {
 
     public static void main(String[] args) {
         new Login();
-
     }
 
 }

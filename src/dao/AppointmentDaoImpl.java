@@ -1,4 +1,4 @@
-package Dao;
+package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,6 +15,7 @@ import java.util.List;
 
 import model.Appointment;
 import model.Register;
+import util.DBUtil;
 
 public class AppointmentDaoImpl implements AppointmentDao{
 
