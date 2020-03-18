@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 package Dao;
+=======
+package dao;
+>>>>>>> 70f126be75391b80bae63d23c57ef7f95a4532cf
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,7 +18,11 @@ import java.util.Date;
 import java.util.List;
 
 import model.Appointment;
+<<<<<<< HEAD
 import model.Register;
+=======
+import util.DBUtil;
+>>>>>>> 70f126be75391b80bae63d23c57ef7f95a4532cf
 
 public class AppointmentDaoImpl implements AppointmentDao{
 
@@ -191,8 +199,7 @@ public class AppointmentDaoImpl implements AppointmentDao{
 	@Override
 	public void setEndTime(Date time) {
 		// TODO Auto-generated method stub
-		
-		
+
 		
 		
 	}
